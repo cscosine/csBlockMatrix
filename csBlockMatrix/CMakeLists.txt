@@ -80,6 +80,6 @@ cs_target_link_libraries(csBlockMatrix
 
 add_subdirectory(tests)
 
-cs_install_target(csBlockMatrix csBlockMatrixExport DEFAULT)
+cs_install_target(csBlockMatrix csBlockMatrix DEFAULT)
 
 cs_finalize_target(csBlockMatrix)

@@ -38,6 +38,6 @@ cs_target_link_libraries(csBlockMatrixTest
 # add to tests
 catch_discover_tests(csBlockMatrixTest DISCOVERY_MODE "PRE_TEST")
 
-cs_install_target(csBlockMatrixTest csBlockMatrixTestExport)
+cs_install_target(csBlockMatrixTest csBlockMatrixTest)
 
 cs_finalize_target(csBlockMatrixTest)

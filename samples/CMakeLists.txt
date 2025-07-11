@@ -16,6 +16,6 @@ cs_target_link_libraries(csBlockMatrixSample
 		csBlockMatrix::csBlockMatrix
 )
 
-cs_install_target(csBlockMatrixSample csBlockMatrixSampleExport DEFAULT)
+cs_install_target(csBlockMatrixSample csBlockMatrixSample DEFAULT)
 
 cs_finalize_target(csBlockMatrixSample)
