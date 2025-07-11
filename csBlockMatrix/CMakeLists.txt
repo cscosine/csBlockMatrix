@@ -28,6 +28,7 @@ cs_find_package(csBlockMatrix PUBLIC OpenMP REQUIRED)
 
 cs_target_sources(csBlockMatrix
 	PRIVATE_INSTALL
+    Global.h
 		DimensionDescriptor.h
 		DimensionDescriptor.hpp
     DimensionDescriptorTraits.h
@@ -76,6 +77,8 @@ cs_target_link_libraries(csBlockMatrix
 	PUBLIC
 		Eigen3::Eigen
     OpenMP::OpenMP_CXX
+		csBlockMatrix::csBlockMatrixAssert
+		csBlockMatrixLib::csBlockMatrixLib_csCMakeBaseInclude
 )
 
 add_subdirectory(tests)
