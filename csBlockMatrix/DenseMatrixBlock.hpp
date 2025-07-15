@@ -1,131 +1,256 @@
 #pragma once
-#include "DenseMatrixBlock.h"
+#include <csBlockMatrix/Global.hpp>
 
-#include "MatrixBlockBase.hpp"
-#include "MatrixBlockDescriptor.hpp"
-#include "Utils.hpp"
+#include <Eigen/Core>
+#include <vector>
+
+#include <csBlockMatrix/MatrixBlockBase.hpp>
+#include <csBlockMatrix/SparsityPattern.hpp>
 
 namespace csBlockMatrix {
 
-template <class T, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlock<T, BR, BC, NBR, NBC>::DenseMatrixBlock() {
-  _mat.resize(this->numElementRows(), this->numElementCols());
-}
+template <class T, int BR, int BC, int NBR = csBlockMatrix::Dynamic, int NBC = csBlockMatrix::Dynamic>
+class DenseMatrixBlock : public MatrixBlockBase<BR, BC, NBR, NBC> {
 
-template <class T, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlock<T, BR, BC, NBR, NBC>::DenseMatrixBlock(const BlockDescriptor& blockDesc)
-    : MatrixBlockBase<BR, BC, NBR, NBC>(blockDesc) {
-  _mat.resize(this->numElementRows(), this->numElementCols());
-}
+public:
+  using Traits = MatrixBlockTypeTraits<csBlockMatrix::BlockDense, T, BR, BC, NBR, NBC>;
 
-template <class T, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlock<T, BR, BC, NBR, NBC>::~DenseMatrixBlock() {}
+  using StorageType = typename Traits::StorageType;
+  using SubMatrixType = typename Traits::SubMatrixType;
+  using BlockType = typename Traits::BlockType;
+  using ConstBlockType = typename Traits::ConstBlockType;
 
-template <class T, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlock<T, BR, BC, NBR, NBC>::resize(const BlockDescriptor& blockDesc) {
-  MatrixBlockBase<BR, BC, NBR, NBC>::resize(blockDesc);
-  _mat.resize(this->numElementRows(), this->numElementCols());
-}
+  using BlockDescriptor = MatrixBlockDescriptor<BR, BC, NBR, NBC>;
+  using DimensionDescriptorRow = typename BlockDescriptor::DimensionDescriptorRow;
+  using DimensionDescriptorCol = typename BlockDescriptor::DimensionDescriptorCol;
 
-template <class T, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlock<T, BR, BC, NBR, NBC>::setZero() {
-  _mat.setZero();
-}
+  using RowTraits = typename DimensionDescriptorRow::Traits;
+  using ColTraits = typename DimensionDescriptorCol::Traits;
 
-//--------------------------------------------------------------------------------------------------
+private:
+  StorageType _mat;
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::DenseMatrixBlockIterable()
-    : DenseMatrixBlock<T, BR, BC, NBR, NBC>() {
-  this->_sparsityPattern = std::make_shared<SparsityPattern<Ordering>>(this->numBlocksRow(), this->numBlocksCol());
-  this->createPattern(*_sparsityPattern);
-}
+public:
+  DenseMatrixBlock();
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::DenseMatrixBlockIterable(const BlockDescriptor& blockDesc,
-                                                                                  const typename SparsityPattern<Ordering>::CSPtr& sp)
-    : DenseMatrixBlock<T, BR, BC, NBR, NBC>(blockDesc) {
-  this->_sparsityPattern = sp;
-  if (blockDesc.numBlocksRow() != 0 && blockDesc.numBlocksCol() != 0) {
-    this->createPattern(*sp);
+  // with block
+  DenseMatrixBlock(const BlockDescriptor& blockDesc);
+
+  virtual ~DenseMatrixBlock();
+
+  virtual void resize(const BlockDescriptor& blockDesc) override final;
+
+  const StorageType& mat() const {
+    return _mat;
   }
-}
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::~DenseMatrixBlockIterable() {}
+  StorageType& mat() {
+    return _mat;
+  }
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::resize(const BlockDescriptor& blockDesc,
-                                                                     const typename SparsityPattern<Ordering>::CSPtr& sp) {
-  DenseMatrixBlock<T, BR, BC, NBR, NBC>::resize(blockDesc);
-  this->_sparsityPattern = sp;
-  this->createPattern(*sp);
-}
+  inline BlockType block(int r, int c) {
+    return _mat.template block<RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>(
+        this->rowBlockStart(r), this->colBlockStart(c), this->rowBlockSize(r), this->colBlockSize(c));
+  }
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::createPattern(const SparsityPattern<Ordering>& sp) {
-  // init block structure
-  _innerIndexes.resize(sp.count());
-  _uid2outer.resize(sp.count());
-  _outerStarts.resize(sp.outerSize() + 1);
-  int count = 0;
-  for (int o = 0; o < sp.outerSize(); o++) {
-    _outerStarts[o] = count;
-    for (int in : sp.inner(o)) {
-      _innerIndexes[count] = in;
-      _uid2outer[count] = o;
-      count++;
+  inline ConstBlockType block(int r, int c) const {
+    return _mat.template block<RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>(
+        this->rowBlockStart(r), this->colBlockStart(c), this->rowBlockSize(r), this->colBlockSize(c));
+  }
+
+  void setZero();
+};
+
+template <class T, int Ordering, int BR, int BC, int NBR = csBlockMatrix::Dynamic, int NBC = csBlockMatrix::Dynamic>
+class DenseMatrixBlockIterable final : public DenseMatrixBlock<T, BR, BC, NBR, NBC> {
+
+public:
+  using DenseMatrixBlockT = DenseMatrixBlock<T, BR, BC, NBR, NBC>;
+
+  using Traits = typename DenseMatrixBlockT::Traits;
+
+  using StorageType = typename DenseMatrixBlockT::StorageType;
+  using SubMatrixType = typename DenseMatrixBlockT::SubMatrixType;
+  using BlockType = typename DenseMatrixBlockT::BlockType;
+  using ConstBlockType = typename DenseMatrixBlockT::ConstBlockType;
+
+  using BlockDescriptor = typename DenseMatrixBlockT::BlockDescriptor;
+  using DimensionDescriptorRow = typename DenseMatrixBlockT::DimensionDescriptorRow;
+  using DimensionDescriptorCol = typename DenseMatrixBlockT::DimensionDescriptorCol;
+
+  using RowTraits = typename DenseMatrixBlockT::RowTraits;
+  using ColTraits = typename DenseMatrixBlockT::ColTraits;
+
+private:
+  std::vector<int> _outerStarts;  // size = outersize
+  std::vector<int> _innerIndexes; // size = nnz blocks
+  std::vector<int> _uid2outer;    // size = nnz blocks, return the outer given uid
+
+  typename SparsityPattern<Ordering>::CSPtr _sparsityPattern;
+
+  void createPattern(const SparsityPattern<Ordering>& sp);
+
+  inline int row(int outer, int inner) const {
+    if (Ordering == csBlockMatrix::ColMajor) {
+      return inner;
+    } else if (Ordering == csBlockMatrix::RowMajor) {
+      return outer;
+    } else {
+      __MAT_ASSERT_FALSE();
     }
   }
-  _outerStarts[sp.outerSize()] = count;
-  assert(count == sp.count());
-}
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-int DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::blockUID(int r, int c) const {
-  if (Ordering == csBlockMatrix::RowMajor) {
-    int start = _outerStarts[r];
-    int end = _outerStarts[r + 1];
-
-    auto itS = _innerIndexes.begin() + start;
-    auto itE = _innerIndexes.begin() + end;
-
-    auto id = Utils::binary_search(itS, itE, c);
-    if (id == itE)
-      return -1;
-    else
-      return id - _innerIndexes.begin();
-  } else if (Ordering == csBlockMatrix::ColMajor) {
-    int start = _outerStarts[c];
-    int end = _outerStarts[c + 1];
-
-    auto itS = _innerIndexes.begin() + start;
-    auto itE = _innerIndexes.begin() + end;
-
-    auto id = Utils::binary_search(itS, itE, r);
-    if (id == itE)
-      return -1;
-    else
-      return id - _innerIndexes.begin();
-  } else {
-    __MAT_ASSERT_FALSE();
+  inline int col(int outer, int inner) const {
+    if (Ordering == csBlockMatrix::ColMajor) {
+      return outer;
+    } else if (Ordering == csBlockMatrix::RowMajor) {
+      return inner;
+    } else {
+      __MAT_ASSERT_FALSE();
+    }
   }
-  return -1;
-}
 
-//--------------------------------------------------------------------------------------------------------------------------------------------
+public:
+  DenseMatrixBlockIterable();
+  DenseMatrixBlockIterable(const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp);
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-template <class BaseT>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT& sm, int outer, int curId,
-                                                                                             int lastId)
-    : _outer(outer)
-    , _sm(&sm)
-    , _curId(curId)
-    , _lastId(lastId) {}
+  virtual ~DenseMatrixBlockIterable();
 
-template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-template <class BaseT>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::~InnerIterator() {}
+  void resize(const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp);
 
+  int nonZeroBlocks() const {
+    return int(_innerIndexes.size());
+  }
+
+  int blockUID(int r, int c) const;
+
+  bool hasBlock(int r, int c) {
+    return blockUID(r, c) >= 0;
+  }
+
+  inline BlockType blockByUID(int uid) {
+    int out = _uid2outer[uid];
+    int in = _innerIndexes[uid];
+    int r = this->row(out, in);
+    int c = this->col(out, in);
+    return this->block(r, c);
+  }
+
+  inline ConstBlockType blockByUID(int uid) const {
+    int out = _uid2outer[uid];
+    int in = _innerIndexes[uid];
+    int r = this->row(out, in);
+    int c = this->col(out, in);
+    return this->block(r, c);
+  }
+
+  const typename SparsityPattern<Ordering>::CSPtr& sparsityPatternCSPtr() const {
+    return _sparsityPattern;
+  }
+
+  const SparsityPattern<Ordering>& sparsityPattern() const {
+    return *_sparsityPattern;
+  }
+
+  // iterator on inner dimension
+  template <class BaseT>
+  class InnerIterator {
+    int _outer;
+
+    BaseT* _sm;
+    int _curId;
+    int _lastId;
+
+  public:
+    InnerIterator(BaseT& _sm, int outer, int curId, int lastId);
+    virtual ~InnerIterator();
+
+    inline int operator()() const {
+      assert(_curId <= _lastId);
+      return _curId;
+    }
+
+    inline int blockUID() const {
+      assert(_curId <= _lastId);
+      return _curId;
+    }
+
+    inline int end() const {
+      return _lastId;
+    }
+
+    inline void operator++() {
+      assert(_curId <= _lastId);
+      _curId++;
+    }
+    inline void operator++(int /*trash*/) {
+      assert(_curId <= _lastId);
+      _curId++;
+    }
+
+    int row() const {
+      assert(_curId <= _lastId);
+      int inner = _sm->_innerIndexes[_curId];
+      return _sm->row(_outer, inner);
+    }
+
+    int col() const {
+      assert(_curId <= _lastId);
+      int inner = _sm->_innerIndexes[_curId];
+      return _sm->col(_outer, inner);
+    }
+
+    template <typename RetType = BlockType>
+    inline std::enable_if_t<!std::is_const<BaseT>::value, RetType> block() {
+      assert(_curId <= _lastId);
+      int inner = _sm->_innerIndexes[_curId];
+      int r = _sm->row(_outer, inner);
+      int c = _sm->col(_outer, inner);
+      return _sm->block(r, c);
+    }
+
+    inline ConstBlockType block() const {
+      assert(_curId <= _lastId);
+      int inner = _sm->_innerIndexes[_curId];
+      int r = _sm->row(_outer, inner);
+      int c = _sm->col(_outer, inner);
+      return _sm->block(r, c);
+    }
+  };
+
+  int outerSize() const {
+    return int(_outerStarts.size() - 1);
+  }
+
+  // iterate on inner, be careful if it is rows or cols depends on ordering
+  InnerIterator<DenseMatrixBlockIterable> begin(int o) {
+    return InnerIterator<DenseMatrixBlockIterable>(*this, o, _outerStarts[o], _outerStarts[o + 1]);
+  }
+
+  const InnerIterator<const DenseMatrixBlockIterable> begin(int o) const {
+    return InnerIterator<const DenseMatrixBlockIterable>(*this, o, _outerStarts[o], _outerStarts[o + 1]);
+  }
+
+  // iterate on column blocks (if block are stored in col major)
+  template <typename RetType = InnerIterator<DenseMatrixBlockIterable>>
+  std::enable_if_t<IsColMajor<Ordering>::value, RetType> colBegin(int c) {
+    return InnerIterator<DenseMatrixBlockIterable>(*this, c, _outerStarts[c], _outerStarts[c + 1]);
+  }
+
+  template <typename RetType = const InnerIterator<const DenseMatrixBlockIterable>>
+  std::enable_if_t<IsColMajor<Ordering>::value, RetType> colBegin(int c) const {
+    return InnerIterator<const DenseMatrixBlockIterable>(*this, c, _outerStarts[c], _outerStarts[c + 1]);
+  }
+
+  // iterate on row blocks (if block are stored in row major)
+  template <typename RetType = InnerIterator<DenseMatrixBlockIterable>>
+  std::enable_if_t<IsRowMajor<Ordering>::value, RetType> rowBegin(int r) {
+    return InnerIterator<DenseMatrixBlockIterable>(*this, r, _outerStarts[r], _outerStarts[r + 1]);
+  }
+
+  template <typename RetType = InnerIterator<const DenseMatrixBlockIterable>>
+  std::enable_if_t<IsRowMajor<Ordering>::value, RetType> rowBegin(int r) const {
+    return InnerIterator<const DenseMatrixBlockIterable>(*this, r, _outerStarts[r], _outerStarts[r + 1]);
+  }
+};
 } // namespace csBlockMatrix

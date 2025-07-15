@@ -1,12 +1,12 @@
 #pragma once
-#include "Global.h"
+#include <csBlockMatrix/Global.hpp>
 
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <vector>
 
-#include "DimensionDescriptor.h"
-#include "MatrixBlockDescriptor.h"
+#include <csBlockMatrix/DimensionDescriptor.hpp>
+#include <csBlockMatrix/MatrixBlockDescriptor.hpp>
 
 namespace csBlockMatrix {
 

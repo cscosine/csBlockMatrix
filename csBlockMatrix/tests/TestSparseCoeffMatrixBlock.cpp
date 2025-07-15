@@ -1,8 +1,8 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include "csBlockMatrix/SparseCoeffMatrixBlock.hpp"
-#include "csBlockMatrix/SparsityPattern.h"
+#include <csBlockMatrix/SparseCoeffMatrixBlock_impl.hpp>
+#include <csBlockMatrix/SparsityPattern.hpp>
 
 #include <iostream>
 #define DEBUGME if (false)

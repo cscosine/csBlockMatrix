@@ -1,7 +1,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include "csBlockMatrix/VectorBlock.hpp"
+#include <csBlockMatrix/VectorBlock_impl.hpp>
 
 const int nr = 10;
 

@@ -1,15 +1,15 @@
 #pragma once
-#include "Global.h"
+#include <csBlockMatrix/Global.hpp>
 
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <vector>
 
-#include "DenseMatrixBlock.h"
-#include "DiagonalMatrixBlock.h"
-#include "SparseCoeffDiagonalMatrixBlock.h"
-#include "SparseCoeffMatrixBlock.h"
-#include "SparseMatrixBlock.h"
+#include <csBlockMatrix/DenseMatrixBlock.hpp>
+#include <csBlockMatrix/DiagonalMatrixBlock.hpp>
+#include <csBlockMatrix/SparseCoeffDiagonalMatrixBlock.hpp>
+#include <csBlockMatrix/SparseCoeffMatrixBlock.hpp>
+#include <csBlockMatrix/SparseMatrixBlock.hpp>
 
 namespace csBlockMatrix {
 

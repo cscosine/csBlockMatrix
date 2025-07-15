@@ -1,5 +1,5 @@
 #pragma once
-#include "Global.h"
+#include <csBlockMatrix/Global.hpp>
 
 #include <cassert>
 #include <set>

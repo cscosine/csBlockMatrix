@@ -1,7 +1,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include "csBlockMatrix/MatrixBlockDescriptor.hpp"
+#include <csBlockMatrix/MatrixBlockDescriptor_impl.hpp>
 
 // let use W matrix in BA case
 static constexpr int camSize = 6;

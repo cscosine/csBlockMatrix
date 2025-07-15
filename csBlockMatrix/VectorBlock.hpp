@@ -1,58 +1,90 @@
 #pragma once
-#include "VectorBlock.h"
+#include <csBlockMatrix/Global.hpp>
 
-#include "DimensionDescriptor.hpp"
+#include <Eigen/Core>
+#include <vector>
+
+#include <csBlockMatrix/DimensionDescriptor.hpp>
+#include <csBlockMatrix/MatrixBlockTypeTraits.hpp>
 
 namespace csBlockMatrix {
 
-template <class T, int BR, int NBR>
-VectorBlock<T, BR, NBR>::VectorBlock()
-    : _segmentDesc(std::make_shared<const SegmentDescriptor>()) {
-  _mat.resize(this->numElements());
-}
+template <class T, int BR, int NBR = csBlockMatrix::Dynamic>
+class VectorBlock {
 
-template <class T, int BR, int NBR>
-VectorBlock<T, BR, NBR>::VectorBlock(typename SegmentTraits::BlockSizeTypePar rowBlocksSizes)
-    : _segmentDesc(std::make_shared<const SegmentDescriptor>(rowBlocksSizes))
+public:
+  using Traits = VectorBlockTraits<T, BR, NBR>;
 
-{
-  _mat.resize(this->numElements());
-}
+  using StorageType = typename Traits::StorageType;
+  using SubVectorType = typename Traits::SubVectorType;
+  using SegmentType = typename Traits::SegmentType;
+  using ConstSegmentType = typename Traits::ConstSegmentType;
 
-template <class T, int BR, int NBR>
-VectorBlock<T, BR, NBR>::VectorBlock(typename SegmentTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow)
-    : _segmentDesc(std::make_shared<const SegmentDescriptor>(rowBlocksSizes, nBlocksRow)) {
-  _mat.resize(this->numElements());
-}
+  using SegmentDescriptor = DimensionDescriptor<BR, NBR>;
 
-template <class T, int BR, int NBR>
-VectorBlock<T, BR, NBR>::VectorBlock(const std::shared_ptr<const SegmentDescriptor>& rowDescription)
-    : _segmentDesc(rowDescription) {
-  _mat.resize(this->numElements());
-}
+  using SegmentTraits = typename DimensionDescriptor<BR, NBR>::Traits;
 
-//-----------------------------------------------------------
+private:
+  StorageType _mat;
+  std::shared_ptr<const SegmentDescriptor> _segmentDesc;
 
-template <class T, int BR, int NBR>
-VectorBlock<T, BR, NBR>::~VectorBlock() {}
+public:
+  VectorBlock();
 
-//-----------------------------------------------------------
+  // with block
+  VectorBlock(typename SegmentTraits::BlockSizeTypePar rowBlocksSizes);
+  VectorBlock(typename SegmentTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow);
+  VectorBlock(const std::shared_ptr<const SegmentDescriptor>& rowDescription);
 
-template <class T, int BR, int NBR>
-void VectorBlock<T, BR, NBR>::resize(typename SegmentTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow) {
-  _segmentDesc = std::make_shared<const SegmentDescriptor>(rowBlocksSizes, nBlocksRow);
-  _mat.resize(this->numElements());
-}
+  virtual ~VectorBlock();
 
-template <class T, int BR, int NBR>
-void VectorBlock<T, BR, NBR>::resize(const std::shared_ptr<const SegmentDescriptor>& rowDescription) {
-  _segmentDesc = rowDescription;
-  _mat.resize(this->numElements());
-}
+  void resize(typename SegmentTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow);
+  void resize(const std::shared_ptr<const SegmentDescriptor>& rowDescription);
 
-template <class T, int BR, int NBR>
-void VectorBlock<T, BR, NBR>::setZero() {
-  _mat.setZero();
-}
+  const StorageType& mat() const {
+    return _mat;
+  }
+
+  StorageType& mat() {
+    return _mat;
+  }
+
+  inline SegmentType segment(int r) {
+    return _mat.template segment<SegmentTraits::blockSizeAtCompileTime>(this->segmentStart(r), this->segmentSize(r));
+  }
+
+  inline ConstSegmentType segment(int r) const {
+    return _mat.template segment<SegmentTraits::blockSizeAtCompileTime>(this->segmentStart(r), this->segmentSize(r));
+  }
+
+  void setZero();
+
+  inline int numSegments() const {
+    return _segmentDesc->numBlocks();
+  }
+
+  inline int segmentUniqueBlockSize() const {
+    return _segmentDesc->uniqueBlockSize();
+  }
+
+  inline int segmentSize(int i) const {
+    return _segmentDesc->blockSize(i);
+  }
+
+  inline int segmentStart(int i) const {
+    return _segmentDesc->blockStart(i);
+  }
+
+  inline int numElements() const {
+    return _segmentDesc->numElements();
+  }
+
+  const SegmentDescriptor& segmentDescription() const {
+    return *_segmentDesc;
+  }
+  const std::shared_ptr<const SegmentDescriptor>& segmentDescriptionCSPtr() const {
+    return _segmentDesc;
+  }
+};
 
 } // namespace csBlockMatrix

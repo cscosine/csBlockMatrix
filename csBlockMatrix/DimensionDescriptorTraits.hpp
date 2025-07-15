@@ -1,34 +1,73 @@
 #pragma once
-#include "DimensionDescriptorTraits.h"
+#include <csBlockMatrix/Global.hpp>
+#include <vector>
 
 namespace csBlockMatrix {
 
 template <int B, int NB>
-constexpr int DimensionDescriptorTraits<B, NB>::numBlocksAtCompileTime;
-template <int B, int NB>
-constexpr int DimensionDescriptorTraits<B, NB>::blockSizeAtCompileTime;
-template <int B, int NB>
-constexpr int DimensionDescriptorTraits<B, NB>::numElementsAtCompileTime;
+struct DimensionDescriptorTraits {
+  using BlockSizeType = int;
+  using BlockSizeTypePar = int;
+
+  static constexpr int numBlocksAtCompileTime = NB;
+  static constexpr int blockSizeAtCompileTime = B;
+  static constexpr int blockType = csBlockMatrix::Fixed;
+  static constexpr int numElementsAtCompileTime = NB * B;
+};
 
 template <int B>
-constexpr int DimensionDescriptorTraits<B, csBlockMatrix::Dynamic>::numBlocksAtCompileTime;
-template <int B>
-constexpr int DimensionDescriptorTraits<B, csBlockMatrix::Dynamic>::blockSizeAtCompileTime;
-template <int B>
-constexpr int DimensionDescriptorTraits<B, csBlockMatrix::Dynamic>::numElementsAtCompileTime;
+struct DimensionDescriptorTraits<B, csBlockMatrix::Dynamic> {
+  using BlockSizeType = int;
+  using BlockSizeTypePar = int;
+
+  static constexpr int numBlocksAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockSizeAtCompileTime = B;
+  static constexpr int blockType = csBlockMatrix::Fixed;
+  static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
+};
 
 template <int NB>
-constexpr int DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB>::numBlocksAtCompileTime;
-template <int NB>
-constexpr int DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB>::blockSizeAtCompileTime;
-template <int NB>
-constexpr int DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB>::numElementsAtCompileTime;
+struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB> {
+  using BlockSizeType = int;
+  using BlockSizeTypePar = int;
+
+  static constexpr int numBlocksAtCompileTime = NB;
+  static constexpr int blockSizeAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockType = csBlockMatrix::Dynamic;
+  static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
+};
+
+template <>
+struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, csBlockMatrix::Dynamic> {
+  using BlockSizeType = int;
+  using BlockSizeTypePar = int;
+
+  static constexpr int numBlocksAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockSizeAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockType = csBlockMatrix::Dynamic;
+  static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
+};
 
 template <int NB>
-constexpr int DimensionDescriptorTraits<csBlockMatrix::Variable, NB>::numBlocksAtCompileTime;
-template <int NB>
-constexpr int DimensionDescriptorTraits<csBlockMatrix::Variable, NB>::blockSizeAtCompileTime;
-template <int NB>
-constexpr int DimensionDescriptorTraits<csBlockMatrix::Variable, NB>::numElementsAtCompileTime;
+struct DimensionDescriptorTraits<csBlockMatrix::Variable, NB> {
+  using BlockSizeType = std::vector<int>;
+  using BlockSizeTypePar = const std::vector<int>&;
+
+  static constexpr int numBlocksAtCompileTime = NB;
+  static constexpr int blockSizeAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockType = csBlockMatrix::Variable;
+  static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
+};
+
+template <>
+struct DimensionDescriptorTraits<csBlockMatrix::Variable, csBlockMatrix::Dynamic> {
+  using BlockSizeType = std::vector<int>;
+  using BlockSizeTypePar = const std::vector<int>&;
+
+  static constexpr int numBlocksAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockSizeAtCompileTime = csBlockMatrix::Dynamic;
+  static constexpr int blockType = csBlockMatrix::Variable;
+  static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
+};
 
 } // namespace csBlockMatrix

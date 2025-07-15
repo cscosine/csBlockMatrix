@@ -1,5 +1,4 @@
-#include "DimensionDescriptor.h"
-#include "DimensionDescriptor.hpp"
+#include <csBlockMatrix/DimensionDescriptor.hpp>
 
 namespace csBlockMatrix {
 

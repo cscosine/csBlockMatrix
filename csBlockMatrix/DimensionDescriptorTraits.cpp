@@ -1,5 +1,4 @@
-#include "DimensionDescriptorTraits.h"
-#include "DimensionDescriptorTraits.hpp"
+#include <csBlockMatrix/DimensionDescriptorTraits.hpp>
 
 namespace csBlockMatrix {
 

@@ -1,80 +1,101 @@
 #pragma once
-#include "MatrixBlockDescriptor.h"
+#include <csBlockMatrix/Global.hpp>
 
-#include "DimensionDescriptor.hpp"
+#include <Eigen/Core>
+#include <memory>
+#include <vector>
+
+#include <csBlockMatrix/DimensionDescriptor.hpp>
 
 namespace csBlockMatrix {
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::MatrixBlockDescriptor()
-    : _rowDesc(std::make_shared<const DimensionDescriptorRow>())
-    , _colDesc(std::make_shared<const DimensionDescriptorCol>()) {}
+template <int BR, int BC, int NBR = csBlockMatrix::Dynamic, int NBC = csBlockMatrix::Dynamic>
+class MatrixBlockDescriptor {
+public:
+  using DimensionDescriptorRow = DimensionDescriptor<BR, NBR>;
+  using DimensionDescriptorCol = DimensionDescriptor<BC, NBC>;
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::MatrixBlockDescriptor(typename RowTraits::BlockSizeTypePar rowBlocksSizes,
-                                                               typename ColTraits::BlockSizeTypePar colBlocksSizes)
-    : _rowDesc(std::make_shared<const DimensionDescriptorRow>(rowBlocksSizes))
-    , _colDesc(std::make_shared<const DimensionDescriptorCol>(colBlocksSizes)) {}
+  using RowTraits = typename DimensionDescriptorRow::Traits;
+  using ColTraits = typename DimensionDescriptorCol::Traits;
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::MatrixBlockDescriptor(typename RowTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow,
-                                                               typename ColTraits::BlockSizeTypePar colBlocksSizes, int nBlocksCol)
-    : _rowDesc(std::make_shared<const DimensionDescriptorRow>(rowBlocksSizes, nBlocksRow))
-    , _colDesc(std::make_shared<const DimensionDescriptorCol>(colBlocksSizes, nBlocksCol)) {}
+private:
+  std::shared_ptr<const DimensionDescriptorRow> _rowDesc;
+  std::shared_ptr<const DimensionDescriptorCol> _colDesc;
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::MatrixBlockDescriptor(const std::shared_ptr<const DimensionDescriptorRow>& rowDescription,
-                                                               const std::shared_ptr<const DimensionDescriptorCol>& colDescription)
-    : _rowDesc(rowDescription)
-    , _colDesc(colDescription) {}
+public:
+  MatrixBlockDescriptor();
 
-// square matrices
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::squareMatrix(typename RowTraits::BlockSizeTypePar blocksSizes) {
-  auto desc = std::make_shared<const DimensionDescriptorRow>(blocksSizes);
-  return MatrixBlockDescriptor<BR, BC, NBR, NBC>(desc, desc);
-}
+  // standard
+  MatrixBlockDescriptor(typename RowTraits::BlockSizeTypePar rowBlocksSizes, typename ColTraits::BlockSizeTypePar colBlocksSizes);
+  MatrixBlockDescriptor(typename RowTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow,
+                        typename ColTraits::BlockSizeTypePar colBlocksSizes, int nBlocksCol);
+  MatrixBlockDescriptor(const std::shared_ptr<const DimensionDescriptorRow>& rowDescription,
+                        const std::shared_ptr<const DimensionDescriptorCol>& colDescription);
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::squareMatrix(typename RowTraits::BlockSizeTypePar blocksSizes, int nBlocks) {
-  auto desc = std::make_shared<const DimensionDescriptorRow>(blocksSizes, nBlocks);
-  return MatrixBlockDescriptor<BR, BC, NBR, NBC>(desc, desc);
-}
+  // square matrices
+  static MatrixBlockDescriptor squareMatrix(typename RowTraits::BlockSizeTypePar blocksSizes);
+  static MatrixBlockDescriptor squareMatrix(typename RowTraits::BlockSizeTypePar blocksSizes, int nBlocks);
+  static MatrixBlockDescriptor squareMatrix(const std::shared_ptr<const DimensionDescriptorRow>& blocksDescription);
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::squareMatrix(const std::shared_ptr<const DimensionDescriptorRow>& blocksDescription) {
-  return MatrixBlockDescriptor<BR, BC, NBR, NBC>(blocksDescription, blocksDescription);
-}
+  virtual ~MatrixBlockDescriptor();
 
-template <int BR, int BC, int NBR, int NBC>
-MatrixBlockDescriptor<BR, BC, NBR, NBC>::~MatrixBlockDescriptor() {}
+  inline int numBlocksRow() const {
+    return _rowDesc->numBlocks();
+  }
+  inline int numBlocksCol() const {
+    return _colDesc->numBlocks();
+  }
 
-template <int BR, int BC, int NBR, int NBC>
-void MatrixBlockDescriptor<BR, BC, NBR, NBC>::resizeSquare(const std::shared_ptr<const DimensionDescriptorRow>& desc) {
-  this->resize(desc, desc);
-}
+  inline int rowUniqueBlockSize() const {
+    return _rowDesc->uniqueBlockSize();
+  }
 
-template <int BR, int BC, int NBR, int NBC>
-void MatrixBlockDescriptor<BR, BC, NBR, NBC>::resizeSquare(typename RowTraits::BlockSizeTypePar blocksSizes, int nBlocks) {
-  _rowDesc = std::make_shared<const DimensionDescriptorRow>(blocksSizes, nBlocks);
-  _colDesc = _rowDesc;
-}
+  inline int colUniqueBlockSize() const {
+    return _colDesc->uniqueBlockSize();
+  }
 
-template <int BR, int BC, int NBR, int NBC>
-void MatrixBlockDescriptor<BR, BC, NBR, NBC>::resize(const std::shared_ptr<const DimensionDescriptorRow>& rowDescription,
-                                                     const std::shared_ptr<const DimensionDescriptorCol>& colDescription) {
-  _rowDesc = rowDescription;
-  _colDesc = colDescription;
-}
+  inline int rowBlockSize(int i) const {
+    return _rowDesc->blockSize(i);
+  }
+  inline int colBlockSize(int j) const {
+    return _colDesc->blockSize(j);
+  }
 
-template <int BR, int BC, int NBR, int NBC>
-void MatrixBlockDescriptor<BR, BC, NBR, NBC>::resize(typename RowTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow,
-                                                     typename ColTraits::BlockSizeTypePar colBlocksSizes, int nBlocksCol) {
-  _rowDesc = std::make_shared<const DimensionDescriptorRow>(rowBlocksSizes, nBlocksRow);
-  _colDesc = std::make_shared<const DimensionDescriptorCol>(colBlocksSizes, nBlocksCol);
-}
+  inline int rowBlockStart(int i) const {
+    return _rowDesc->blockStart(i);
+  }
+  inline int colBlockStart(int j) const {
+    return _colDesc->blockStart(j);
+  }
+
+  inline int numElementRows() const {
+    return _rowDesc->numElements();
+  }
+  inline int numElementCols() const {
+    return _colDesc->numElements();
+  }
+
+  const DimensionDescriptorRow& rowDescription() const {
+    return *_rowDesc;
+  }
+  const DimensionDescriptorCol& colDescription() const {
+    return *_colDesc;
+  }
+
+  const std::shared_ptr<const DimensionDescriptorRow>& rowDescriptionCSPtr() const {
+    return _rowDesc;
+  }
+  const std::shared_ptr<const DimensionDescriptorCol>& colDescriptionCSPtr() const {
+    return _colDesc;
+  }
+
+  void resizeSquare(const std::shared_ptr<const DimensionDescriptorRow>& desc);
+  void resizeSquare(typename RowTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow);
+
+  void resize(const std::shared_ptr<const DimensionDescriptorRow>& rowDescription,
+              const std::shared_ptr<const DimensionDescriptorCol>& colDescription);
+  void resize(typename RowTraits::BlockSizeTypePar rowBlocksSizes, int nBlocksRow, typename ColTraits::BlockSizeTypePar colBlocksSizes,
+              int nBlocksCol);
+};
 
 } // namespace csBlockMatrix

@@ -1,7 +1,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include "csBlockMatrix/DimensionDescriptor.hpp"
+#include <csBlockMatrix/DimensionDescriptor_impl.hpp>
 
 #include <memory>
 #include <type_traits>

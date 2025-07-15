@@ -1,4 +1,4 @@
-#include "SparsityPattern.h"
+#include <csBlockMatrix/SparsityPattern.hpp>
 
 namespace csBlockMatrix {
 

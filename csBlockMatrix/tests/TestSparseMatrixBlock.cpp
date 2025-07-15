@@ -1,8 +1,8 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-#include "csBlockMatrix/SparseMatrixBlock.hpp"
-#include "csBlockMatrix/SparsityPattern.h"
+#include <csBlockMatrix/SparseMatrixBlock_impl.hpp>
+#include <csBlockMatrix/SparsityPattern.hpp>
 
 // let use W matrix in BA case
 static constexpr int camSize = 6;

@@ -1,72 +1,53 @@
-#include "MatrixBlockDescriptor.hpp"
-#include "SparsityPattern.h"
-#include "SparsityPatternBlockDescriptor.h"
+#pragma once
+#include <csBlockMatrix/Global.hpp>
+
+#include <vector>
 
 namespace csBlockMatrix {
 
 template <int Ordering>
+class SparsityPattern;
 template <int BR, int BC, int NBR, int NBC>
-SparsityPatternBlockDescriptor<Ordering>::SparsityPatternBlockDescriptor(const SparsityPattern<Ordering>& sp,
-                                                                         const MatrixBlockDescriptor<BR, BC, NBR, NBC>& bd)
-    : _outerStrides(sp.outerSize())
-    , _offsets(sp.outerSize())
-    , _nonZeroCoeffs(0) {
-
-  if (Ordering == csBlockMatrix::ColMajor) {
-    computeStrides(sp, bd.colDescription(), bd.rowDescription());
-  } else if (Ordering == csBlockMatrix::RowMajor) {
-    computeStrides(sp, bd.rowDescription(), bd.colDescription());
-  } else
-    __MAT_ASSERT_FALSE();
-}
+class MatrixBlockDescriptor;
 
 template <int Ordering>
-SparsityPatternBlockDescriptor<Ordering>::~SparsityPatternBlockDescriptor() {}
+class SparsityPatternBlockDescriptor {
+  int _nonZeroCoeffs;
+  std::vector<int> _outerStrides;
+  std::vector<std::vector<int>> _offsets;
 
-template <int Ordering>
-template <class OuterDesc, class InnerDesc>
-void SparsityPatternBlockDescriptor<Ordering>::computeStrides(const SparsityPattern<Ordering>& sp, const OuterDesc& outDesc,
-                                                              const InnerDesc& inDesc) {
-  int offset = 0;
-  for (int oi = 0; oi < _outerStrides.size(); oi++) {
-    const auto& blocksInner = sp.inner(oi);
+  template <class OuterDesc, class InnerDesc>
+  void computeStrides(const SparsityPattern<Ordering>& sp, const OuterDesc& outDesc, const InnerDesc& inDesc);
 
-    if (InnerDesc::Traits::blockType == csBlockMatrix::Variable) {
-      int coeff_stride = 0;
-      int offset_first = offset;
-      int num_el = 0;
-      int count = 0;
-      _offsets[oi].resize(blocksInner.size());
-      for (auto bi : blocksInner) {
-        _offsets[oi][count++] = offset;
-        int bs = inDesc.blockSize(bi);
-        offset += bs;
-        coeff_stride += bs;
+public:
+  template <int BR, int BC, int NBR, int NBC>
+  SparsityPatternBlockDescriptor(const SparsityPattern<Ordering>& sp, const MatrixBlockDescriptor<BR, BC, NBR, NBC>& bd);
 
-        num_el += inDesc.blockSize(bi) * outDesc.blockSize(oi);
-      }
-      _outerStrides[oi] = coeff_stride;
-      // prepare offset for next outer block
-      offset = offset_first + num_el;
-      // cumulate num elements
-      _nonZeroCoeffs += num_el;
-    } else {
-      assert(inDesc.uniqueBlockSize() >= 0);
-      _outerStrides[oi] = blocksInner.size() * inDesc.uniqueBlockSize();
+  virtual ~SparsityPatternBlockDescriptor();
 
-      int offset_first = offset;
-      _offsets[oi].resize(blocksInner.size());
-      int count = 0;
-      for (auto bi : blocksInner) {
-        _offsets[oi][count++] = offset;
-        offset += inDesc.uniqueBlockSize();
-      }
-      int num_el = blocksInner.size() * inDesc.uniqueBlockSize() * outDesc.blockSize(oi);
-      offset = offset_first + num_el;
-      // cumulate num elements
-      _nonZeroCoeffs += num_el;
-    }
+  int nonZeroCoeffs() const {
+    return _nonZeroCoeffs;
   }
-}
+
+  int outerSize() const {
+    return _outerStrides.size();
+  }
+
+  int stride(int outer) const {
+    return _outerStrides[outer];
+  }
+
+  const std::vector<int>& outerStrides() const {
+    return _outerStrides;
+  }
+
+  const std::vector<int>& offsets(int oi) const {
+    return _offsets[oi];
+  }
+
+  int offset(int outer, int inner) const {
+    return _offsets[outer][inner];
+  }
+};
 
 } // namespace csBlockMatrix

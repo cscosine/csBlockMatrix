@@ -28,49 +28,38 @@ cs_find_package(csBlockMatrix PUBLIC OpenMP REQUIRED)
 
 cs_target_sources(csBlockMatrix
 	PRIVATE_INSTALL
-    Global.h
-		DimensionDescriptor.h
+    Global.hpp
 		DimensionDescriptor.hpp
-    DimensionDescriptorTraits.h
+		DimensionDescriptor_impl.hpp
     DimensionDescriptorTraits.hpp
-    MatrixBlockDescriptor.h
+    DimensionDescriptorTraits_impl.hpp
     MatrixBlockDescriptor.hpp
-    MatrixBlockTypeTraits.h
-    MatrixTypeTraits.h
-    DenseMatrixBlock.h
+    MatrixBlockDescriptor_impl.hpp
+    MatrixBlockTypeTraits.hpp
+    MatrixTypeTraits.hpp
     DenseMatrixBlock.hpp
-    DiagonalMatrixBlock.h
+    DenseMatrixBlock_impl.hpp
     DiagonalMatrixBlock.hpp
-    MatrixBlockBase.h
+    DiagonalMatrixBlock_impl.hpp
     MatrixBlockBase.hpp
-    SparsityPattern.h
-    SparseMatrixBlock.h
+    MatrixBlockBase_impl.hpp
+    SparsityPattern.hpp
     SparseMatrixBlock.hpp
-    SparseCoeffMatrixBlock.h
+    SparseMatrixBlock_impl.hpp
     SparseCoeffMatrixBlock.hpp
-    SparseCoeffDiagonalMatrixBlock.h
+    SparseCoeffMatrixBlock_impl.hpp
     SparseCoeffDiagonalMatrixBlock.hpp
-    SparsityPatternBlockDescriptor.h
+    SparseCoeffDiagonalMatrixBlock_impl.hpp
     SparsityPatternBlockDescriptor.hpp
-    Utils.h
+    SparsityPatternBlockDescriptor_impl.hpp
     Utils.hpp
-    VectorBlock.h
+    Utils_impl.hpp
     VectorBlock.hpp
+    VectorBlock_impl.hpp
 		PRIVATE
-    Global.cpp
 		DimensionDescriptor.cpp
     DimensionDescriptorTraits.cpp
-    MatrixBlockDescriptor.cpp
-    DenseMatrixBlock.cpp
-    DiagonalMatrixBlock.cpp
-    MatrixBlockBase.cpp
     SparsityPattern.cpp
-    SparseMatrixBlock.cpp
-    SparsityPatternBlockDescriptor.cpp
-    SparseCoeffMatrixBlock.cpp
-    SparseCoeffDiagonalMatrixBlock.cpp
-    Utils.cpp
-    VectorBlock.cpp
 )
 
 cs_target_link_libraries(csBlockMatrix
