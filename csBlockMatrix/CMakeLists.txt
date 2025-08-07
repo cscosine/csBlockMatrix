@@ -70,7 +70,7 @@ cs_target_link_libraries(csBlockMatrix
 		Eigen3::Eigen
     OpenMP::OpenMP_CXX
 		csBlockMatrix::csBlockMatrixAssert
-		csBlockMatrixLib::csBlockMatrixLib_csCMakeBaseInclude
+		csBlockMatrixSol::csBlockMatrixSol_csCMakeBaseInclude
 )
 
 add_subdirectory(tests)
