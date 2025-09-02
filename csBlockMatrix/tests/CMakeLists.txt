@@ -31,8 +31,6 @@ cs_target_link_libraries(csBlockMatrixTest
   csBlockMatrix::csBlockMatrix
   csCore::math
   csCore::testUtils
-  csBlockMatrixSol::csBlockMatrixSol_csCMakeBaseInclude
-  csBlockMatrixSol::csBlockMatrixSol_csCMakeCompileOptionsDefault
   Catch2::Catch2WithMain)
 
 # add to tests
