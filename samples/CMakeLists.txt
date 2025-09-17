@@ -7,9 +7,6 @@ cs_target_sources(csBlockMatrixSample
 	PRIVATE
 	eigenPlayground.cpp
 )
-set_target_properties(csBlockMatrixSample PROPERTIES AUTOMOC ON)
-set_target_properties(csBlockMatrixSample PROPERTIES AUTOUIC ON)
-set_target_properties(csBlockMatrixSample PROPERTIES AUTORCC ON)
 
 cs_target_link_libraries(csBlockMatrixSample
 	PUBLIC

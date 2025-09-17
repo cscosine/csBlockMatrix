@@ -24,10 +24,8 @@ cs_add_library(csBlockMatrix::csBlockMatrix ALIAS csBlockMatrix)
 cs_find_package(csBlockMatrix PUBLIC Eigen3 REQUIRED CONFIG)
 cs_find_package(csBlockMatrix PUBLIC csCore COMPONENTS core eigenUtils REQUIRED CONFIG)
 
-message(STATUS "Looking for OpenMP. If this fail, for clang on linux try `sudo apt install libomp-dev`")
-# TODO(sc) still not working on win MSVC+LLVM
-# seems related https://gitlab.kitware.com/cmake/cmake/-/issues/20999
-cs_find_package(csBlockMatrix PUBLIC OpenMP REQUIRED)
+# add openmp support, this will both find the right packages and add link libraries
+csUseOpenMPOnTarget(csBlockMatrix PUBLIC)
 
 cs_target_sources(csBlockMatrix
 	PRIVATE_INSTALL
@@ -68,7 +66,6 @@ cs_target_sources(csBlockMatrix
 cs_target_link_libraries(csBlockMatrix
 	PUBLIC
 		Eigen3::Eigen
-    OpenMP::OpenMP_CXX
 		csBlockMatrix::csBlockMatrixAssert
 		csBlockMatrixSol::csBlockMatrixSol_csCMakeBaseInclude
     csBlockMatrixSol::csBlockMatrixSol_csCMakeCompileOptionsDefault
