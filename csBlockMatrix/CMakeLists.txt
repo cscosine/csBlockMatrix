@@ -25,7 +25,7 @@ cs_find_package(csBlockMatrix PUBLIC Eigen3 REQUIRED CONFIG)
 cs_find_package(csBlockMatrix PUBLIC csCore COMPONENTS core eigenUtils REQUIRED CONFIG)
 
 # add openmp support, this will both find the right packages and add link libraries
-csUseOpenMPOnTarget(csBlockMatrix PUBLIC)
+cs_target_use_openmp(csBlockMatrix PUBLIC)
 
 cs_target_sources(csBlockMatrix
 	PRIVATE_INSTALL
@@ -67,12 +67,9 @@ cs_target_link_libraries(csBlockMatrix
 	PUBLIC
 		Eigen3::Eigen
 		csBlockMatrix::csBlockMatrixAssert
-		csBlockMatrixSol::csBlockMatrixSol_csCMakeBaseInclude
-    csBlockMatrixSol::csBlockMatrixSol_csCMakeCompileOptionsDefault
+		csBlockMatrix::cscmake_base_include
 )
 
 add_subdirectory(tests)
 
-cs_install_target(csBlockMatrix csBlockMatrix DEFAULT)
-
-cs_finalize_target(csBlockMatrix)
+cs_install_target(csBlockMatrix COMPONENT csBlockMatrix DEFAULT)
