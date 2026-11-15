@@ -180,36 +180,11 @@ public:
       assert(_curId <= _lastId);
       return _sm->blockByUID(_curId);
     }
-
-    int outerSize() const {
-      return this->nonZeroBlocks();
-    }
-
-    // iterate on inner, be careful if it is rows or cols depends on ordering (no matter in this case, diagonal)
-    InnerIterator<SparseCoeffDiagonalMatrixBlock> begin(int o) {
-      return InnerIterator<SparseCoeffDiagonalMatrixBlock>(*this, o, (o < this->nonZeroBlocks() ? o + 1 : o));
-    }
-
-    const InnerIterator<const SparseCoeffDiagonalMatrixBlock> begin(int o) const {
-      return InnerIterator<const SparseCoeffDiagonalMatrixBlock>(*this, o, (o < this->nonZeroBlocks() ? o + 1 : o));
-    }
-
-    InnerIterator<SparseCoeffDiagonalMatrixBlock> colBegin(int c) {
-      return InnerIterator<SparseCoeffDiagonalMatrixBlock>(*this, c, (c < this->nonZeroBlocks() ? c + 1 : c));
-    }
-
-    InnerIterator<const SparseCoeffDiagonalMatrixBlock> colBegin(int c) const {
-      return InnerIterator<const SparseCoeffDiagonalMatrixBlock>(*this, c, (c < this->nonZeroBlocks() ? c + 1 : c));
-    }
-
-    InnerIterator<SparseCoeffDiagonalMatrixBlock> rowBegin(int c) {
-      return InnerIterator<SparseCoeffDiagonalMatrixBlock>(*this, c, (c < this->nonZeroBlocks() ? c + 1 : c));
-    }
-
-    InnerIterator<const SparseCoeffDiagonalMatrixBlock> rowBegin(int c) const {
-      return InnerIterator<const SparseCoeffDiagonalMatrixBlock>(*this, c, (c < this->nonZeroBlocks() ? c + 1 : c));
-    }
   };
+
+  int outerSize() const {
+    return nonZeroBlocks();
+  }
 
   // iterate on inner, be careful if it is rows or cols depends on ordering (no matter in this case, diagonal)
   InnerIterator<SparseCoeffDiagonalMatrixBlock> begin(int o) {
