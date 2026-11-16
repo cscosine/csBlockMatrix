@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <csBlockMatrix/SparsityPatternBlockDescriptor.hpp>
 
 #include <csBlockMatrix/MatrixBlockDescriptor_impl.hpp>

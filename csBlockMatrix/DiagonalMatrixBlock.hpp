@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <csBlockMatrix/Global.hpp>
 
 #include <Eigen/Core>
