@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <csBlockMatrix/DiagonalMatrixBlock.hpp>
 
 #include <csBlockMatrix/MatrixBlockBase_impl.hpp>
