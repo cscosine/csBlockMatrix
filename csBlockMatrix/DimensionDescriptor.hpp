@@ -9,17 +9,14 @@
 
 namespace csBlockMatrix {
 
-template <int NB>
-class DimensionDescriptorBase {
+template <int NB> class DimensionDescriptorBase {
 
 public:
   DimensionDescriptorBase();
   DimensionDescriptorBase(int nb);
   virtual ~DimensionDescriptorBase();
 
-  inline int numBlocks() const {
-    return NB;
-  }
+  inline int numBlocks() const { return NB; }
 
 protected:
   void setNumBlocks(int nb);
@@ -27,8 +24,7 @@ protected:
 
 //-----------------------------------------------------------------------------------------
 
-template <>
-class DimensionDescriptorBase<csBlockMatrix::Dynamic> {
+template <> class DimensionDescriptorBase<csBlockMatrix::Dynamic> {
   int _nb;
 
 public:
@@ -36,9 +32,7 @@ public:
   DimensionDescriptorBase(int nb);
   virtual ~DimensionDescriptorBase();
 
-  inline int numBlocks() const {
-    return _nb;
-  }
+  inline int numBlocks() const { return _nb; }
 
 protected:
   void setNumBlocks(int nb);
@@ -46,8 +40,7 @@ protected:
 
 //-----------------------------------------------------------------------------------------
 
-template <int B, int NB>
-class DimensionDescriptor : public DimensionDescriptorBase<NB> {
+template <int B, int NB> class DimensionDescriptor : public DimensionDescriptorBase<NB> {
 
 public:
   using Traits = DimensionDescriptorTraits<B, NB>;
@@ -57,9 +50,7 @@ public:
   DimensionDescriptor(int b, int nBlocks);
   virtual ~DimensionDescriptor();
 
-  inline int uniqueBlockSize() const {
-    return B;
-  }
+  inline int uniqueBlockSize() const { return B; }
 
   inline int blockSize(int i) const {
     assert(i >= 0 && i < this->numBlocks());
@@ -76,9 +67,7 @@ public:
     this->setNumBlocks(nb);
   }
 
-  int numElements() const {
-    return B * this->numBlocks();
-  }
+  int numElements() const { return B * this->numBlocks(); }
 
   void addBlock(int b) {
     assert(b == B);
@@ -88,8 +77,7 @@ public:
 
 //-----------------------------------------------------------------------------------------
 
-template <int NB>
-class DimensionDescriptor<csBlockMatrix::Dynamic, NB> : public DimensionDescriptorBase<NB> {
+template <int NB> class DimensionDescriptor<csBlockMatrix::Dynamic, NB> : public DimensionDescriptorBase<NB> {
 
   int _b;
 
@@ -101,9 +89,7 @@ public:
   DimensionDescriptor(int b, int nBlocks);
   virtual ~DimensionDescriptor();
 
-  inline int uniqueBlockSize() const {
-    return _b;
-  }
+  inline int uniqueBlockSize() const { return _b; }
 
   inline int blockSize(int i) const {
     assert(i >= 0 && i < this->numBlocks());
@@ -121,19 +107,14 @@ public:
     this->setNumBlocks(nb);
   }
 
-  int numElements() const {
-    return this->_b * this->numBlocks();
-  }
+  int numElements() const { return this->_b * this->numBlocks(); }
 
-  void addBlock(int b) {
-    this->setNumBlocks(this->numBlocks() + 1);
-  }
+  void addBlock(int b) { this->setNumBlocks(this->numBlocks() + 1); }
 };
 
 //-----------------------------------------------------------------------------------------
 
-template <int NB>
-class DimensionDescriptor<csBlockMatrix::Variable, NB> : public DimensionDescriptorBase<NB> {
+template <int NB> class DimensionDescriptor<csBlockMatrix::Variable, NB> : public DimensionDescriptorBase<NB> {
 
   std::vector<int> _bi;
   std::vector<int> _bi_start;
@@ -144,13 +125,11 @@ public:
   using Traits = DimensionDescriptorTraits<csBlockMatrix::Variable, NB>;
 
   DimensionDescriptor();
-  DimensionDescriptor(const std::vector<int>& bi);
-  DimensionDescriptor(const std::vector<int>& bi, int nBlocks);
+  DimensionDescriptor(const std::vector<int> &bi);
+  DimensionDescriptor(const std::vector<int> &bi, int nBlocks);
   virtual ~DimensionDescriptor();
 
-  inline int uniqueBlockSize() const {
-    return -1;
-  }
+  inline int uniqueBlockSize() const { return -1; }
 
   inline int blockSize(int i) const {
     assert(i >= 0 && i < this->numBlocks());
@@ -162,18 +141,14 @@ public:
     return _bi_start[i];
   }
 
-  const std::vector<int>& blockSizes() const {
-    return _bi;
-  }
+  const std::vector<int> &blockSizes() const { return _bi; }
 
-  void resize(const std::vector<int>& bi, int nb);
-  void resize(const std::vector<int>& bi);
+  void resize(const std::vector<int> &bi, int nb);
+  void resize(const std::vector<int> &bi);
 
   void addBlock(int b);
 
-  int numElements() const {
-    return _bi_start.back();
-  }
+  int numElements() const { return _bi_start.back(); }
 };
 
 } // namespace csBlockMatrix

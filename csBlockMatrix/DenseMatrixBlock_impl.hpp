@@ -8,28 +8,25 @@
 
 namespace csBlockMatrix {
 
-template <class T, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlock<T, BR, BC, NBR, NBC>::DenseMatrixBlock() {
+template <class T, int BR, int BC, int NBR, int NBC> DenseMatrixBlock<T, BR, BC, NBR, NBC>::DenseMatrixBlock() {
   _mat.resize(this->numElementRows(), this->numElementCols());
 }
 
 template <class T, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlock<T, BR, BC, NBR, NBC>::DenseMatrixBlock(const BlockDescriptor& blockDesc)
+DenseMatrixBlock<T, BR, BC, NBR, NBC>::DenseMatrixBlock(const BlockDescriptor &blockDesc)
     : MatrixBlockBase<BR, BC, NBR, NBC>(blockDesc) {
   _mat.resize(this->numElementRows(), this->numElementCols());
 }
 
-template <class T, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlock<T, BR, BC, NBR, NBC>::~DenseMatrixBlock() {}
+template <class T, int BR, int BC, int NBR, int NBC> DenseMatrixBlock<T, BR, BC, NBR, NBC>::~DenseMatrixBlock() {}
 
 template <class T, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlock<T, BR, BC, NBR, NBC>::resize(const BlockDescriptor& blockDesc) {
+void DenseMatrixBlock<T, BR, BC, NBR, NBC>::resize(const BlockDescriptor &blockDesc) {
   MatrixBlockBase<BR, BC, NBR, NBC>::resize(blockDesc);
   _mat.resize(this->numElementRows(), this->numElementCols());
 }
 
-template <class T, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlock<T, BR, BC, NBR, NBC>::setZero() {
+template <class T, int BR, int BC, int NBR, int NBC> void DenseMatrixBlock<T, BR, BC, NBR, NBC>::setZero() {
   _mat.setZero();
 }
 
@@ -43,8 +40,8 @@ DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::DenseMatrixBlockIterabl
 }
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::DenseMatrixBlockIterable(const BlockDescriptor& blockDesc,
-                                                                                  const typename SparsityPattern<Ordering>::CSPtr& sp)
+DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::DenseMatrixBlockIterable(
+    const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp)
     : DenseMatrixBlock<T, BR, BC, NBR, NBC>(blockDesc) {
   this->_sparsityPattern = sp;
   if (blockDesc.numBlocksRow() != 0 && blockDesc.numBlocksCol() != 0) {
@@ -56,15 +53,15 @@ template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::~DenseMatrixBlockIterable() {}
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::resize(const BlockDescriptor& blockDesc,
-                                                                     const typename SparsityPattern<Ordering>::CSPtr& sp) {
+void DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::resize(
+    const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp) {
   DenseMatrixBlock<T, BR, BC, NBR, NBC>::resize(blockDesc);
   this->_sparsityPattern = sp;
   this->createPattern(*sp);
 }
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::createPattern(const SparsityPattern<Ordering>& sp) {
+void DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::createPattern(const SparsityPattern<Ordering> &sp) {
   // init block structure
   _innerIndexes.resize(sp.count());
   _uid2outer.resize(sp.count());
@@ -118,12 +115,9 @@ int DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::blockUID(int r, int
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class BaseT>
-DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT& sm, int outer, int curId,
-                                                                                             int lastId)
-    : _outer(outer)
-    , _sm(&sm)
-    , _curId(curId)
-    , _lastId(lastId) {}
+DenseMatrixBlockIterable<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT &sm, int outer,
+                                                                                             int curId, int lastId)
+    : _outer(outer), _sm(&sm), _curId(curId), _lastId(lastId) {}
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class BaseT>

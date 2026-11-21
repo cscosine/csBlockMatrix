@@ -19,10 +19,9 @@ SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::SparseCoeffMatrixBlock() 
 }
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::SparseCoeffMatrixBlock(const BlockDescriptor& blockDesc,
-                                                                              const typename SparsityPattern<Ordering>::CSPtr& sp)
-    : MatrixBlockBase<BR, BC, NBR, NBC>(blockDesc)
-    , _sparsityPattern(sp) {
+SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::SparseCoeffMatrixBlock(
+    const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp)
+    : MatrixBlockBase<BR, BC, NBR, NBC>(blockDesc), _sparsityPattern(sp) {
   if (blockDesc.numBlocksRow() != 0 && blockDesc.numBlocksCol() != 0) {
     _sparseCoeffMap.reset(new SparsityPatternBlockDescriptor<Ordering>(*sp, this->blockDescriptor()));
     this->resizeImpl(*sp);
@@ -34,8 +33,9 @@ SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::~SparseCoeffMatrixBlock()
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class OuterDesc, class InnerDesc>
-void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::populateSparseMat(const SparsityPattern<Ordering>& sp,
-                                                                              const OuterDesc& outDesc, const InnerDesc& inDesc) {
+void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::populateSparseMat(const SparsityPattern<Ordering> &sp,
+                                                                              const OuterDesc &outDesc,
+                                                                              const InnerDesc &inDesc) {
   _mat.resize(this->numElementRows(), this->numElementCols());
   _mat.reserve(_sparseCoeffMap->nonZeroCoeffs());
 
@@ -66,7 +66,7 @@ void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::populateSparseMat(co
 }
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resizeImpl(const SparsityPattern<Ordering>& sp) {
+void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resizeImpl(const SparsityPattern<Ordering> &sp) {
 
   // init block structure
   _innerIndexes.resize(sp.count());
@@ -95,8 +95,8 @@ void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resizeImpl(const Spa
 }
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resize(const BlockDescriptor& blockDesc,
-                                                                   const typename SparsityPattern<Ordering>::CSPtr& sp) {
+void SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resize(
+    const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp) {
   MatrixBlockBase<BR, BC, NBR, NBC>::resize(blockDesc);
   _sparsityPattern = sp;
   _sparseCoeffMap.reset(new SparsityPatternBlockDescriptor<Ordering>(*sp, this->blockDescriptor()));
@@ -177,11 +177,9 @@ int SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::searchBlockInner(int 
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class BaseT>
-SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT& sm, int outer, int curId, int lastId)
-    : _outer(outer)
-    , _sm(&sm)
-    , _curId(curId)
-    , _lastId(lastId) {}
+SparseCoeffMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT &sm, int outer,
+                                                                                           int curId, int lastId)
+    : _outer(outer), _sm(&sm), _curId(curId), _lastId(lastId) {}
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class BaseT>

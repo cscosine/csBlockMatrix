@@ -12,47 +12,49 @@ static constexpr int numPoints = 10;
 static const std::vector<int> camSizeVar = {5, 8, 6, 5};
 static const std::vector<int> pointSizeVar = {2, 2, 3, 3, 4, 4, 5, 5, 1, 1};
 
-TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMatrixBlock]",
-                       ((int BR, int BC, int NBR, int NBC, int Ordering), BR, BC, NBR, NBC, Ordering),
-                       (camSize, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
-                        csBlockMatrix::ColMajor),
-                       //-----------------------------------------------------------
-                       (camSize, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
-                        csBlockMatrix::RowMajor)) {
+TEMPLATE_TEST_CASE_SIG(
+    "SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMatrixBlock]",
+    ((int BR, int BC, int NBR, int NBC, int Ordering), BR, BC, NBR, NBC, Ordering),
+    (camSize, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
+    (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::ColMajor),
+    //-----------------------------------------------------------
+    (camSize, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
+    (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::RowMajor)) {
 
   using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, Ordering, BR, BC, NBR, NBC>;
 
-  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
+  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(
+      new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
   sp->setDiagonal();
 
   std::unique_ptr<MatT> mat;
@@ -79,14 +81,16 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMa
   REQUIRE(mat2.numElementRows() == camSize * numCams);
   REQUIRE(mat2.numElementCols() == pointSize * numPoints);
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             sp);
   REQUIRE(mat3.numElementRows() == camSize * numCams);
   REQUIRE(mat3.numElementCols() == pointSize * numPoints);
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()), sp);
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              sp);
   REQUIRE(mat4.numElementRows() == camSize * numCams);
   REQUIRE(mat4.numElementCols() == pointSize * numPoints);
 
@@ -112,18 +116,21 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMa
 }
 
 TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDiagonalMatrixBlock]",
-                       ((int BR, int NBR, int Ordering), BR, NBR, Ordering), (camSize, numCams, csBlockMatrix::ColMajor),
+                       ((int BR, int NBR, int Ordering), BR, NBR, Ordering),
+                       (camSize, numCams, csBlockMatrix::ColMajor),
                        (camSize, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numCams, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        //---------------------------------------------
-                       (camSize, numCams, csBlockMatrix::RowMajor), (camSize, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+                       (camSize, numCams, csBlockMatrix::RowMajor),
+                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, numCams, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor)) {
 
   using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, Ordering, BR, BR, NBR, NBR>;
 
-  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
+  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(
+      new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
   sp->setDiagonal();
 
   std::unique_ptr<MatT> mat;
@@ -150,14 +157,16 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDia
   REQUIRE(mat2.numElementRows() == camSize * numCams);
   REQUIRE(mat2.numElementCols() == camSize * numCams);
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             sp);
   REQUIRE(mat3.numElementRows() == camSize * numCams);
   REQUIRE(mat3.numElementCols() == camSize * numCams);
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()), sp);
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              sp);
   REQUIRE(mat4.numElementRows() == camSize * numCams);
   REQUIRE(mat4.numElementCols() == camSize * numCams);
 
@@ -183,18 +192,21 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDia
 }
 
 TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlockVar", "[SparseCoeffDiagonalMatrixBlock]",
-                       ((int NBR, int NBC, int Ordering), NBR, NBC, Ordering), (numCams, numPoints, csBlockMatrix::ColMajor),
+                       ((int NBR, int NBC, int Ordering), NBR, NBC, Ordering),
+                       (numCams, numPoints, csBlockMatrix::ColMajor),
                        (numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        //----------------------------
-                       (numCams, numPoints, csBlockMatrix::RowMajor), (numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+                       (numCams, numPoints, csBlockMatrix::RowMajor),
+                       (numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor)) {
-  using MatT =
-      csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, Ordering, csBlockMatrix::Variable, csBlockMatrix::Variable, NBR, NBC>;
+  using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, Ordering, csBlockMatrix::Variable,
+                                                             csBlockMatrix::Variable, NBR, NBC>;
   std::unique_ptr<MatT> mat;
-  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
+  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(
+      new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
   sp->setDiagonal();
 
   SECTION("default ctor") {
@@ -221,14 +233,16 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlockVar", "[SparseCoeffDiagona
   REQUIRE(mat2.numElementRows() == camSize * numCams);
   REQUIRE(mat2.numElementCols() == pointSize * numPoints);
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             sp);
   REQUIRE(mat3.numElementRows() == camSize * numCams);
   REQUIRE(mat3.numElementCols() == pointSize * numPoints);
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()), sp);
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              sp);
   REQUIRE(mat4.numElementRows() == camSize * numCams);
   REQUIRE(mat4.numElementCols() == pointSize * numPoints);
 
@@ -257,11 +271,12 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlockVar-Square", "[SparseCoeff
                        ((int NBR, int Ordering), NBR, Ordering), (numCams, csBlockMatrix::ColMajor),
                        (numCams, csBlockMatrix::RowMajor), (csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::RowMajor)) {
-  using MatT =
-      csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, Ordering, csBlockMatrix::Variable, csBlockMatrix::Variable, NBR, NBR>;
+  using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, Ordering, csBlockMatrix::Variable,
+                                                             csBlockMatrix::Variable, NBR, NBR>;
   std::unique_ptr<MatT> mat;
 
-  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
+  auto sp = typename csBlockMatrix::SparsityPattern<Ordering>::SPtr(
+      new csBlockMatrix::SparsityPattern<Ordering>(numCams, numCams));
   sp->setDiagonal();
 
   SECTION("default ctor") {
@@ -297,13 +312,15 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlockVar-Square", "[SparseCoeff
   MatT mat2(mat->blockDescriptor(), sp);
   REQUIRE(std::min(mat2.numBlocksRow(), mat2.numBlocksCol()) == mat->nonZeroBlocks());
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             sp);
   REQUIRE(std::min(mat3.numBlocksRow(), mat3.numBlocksCol()) == mat->nonZeroBlocks());
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()), sp);
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              sp);
   REQUIRE(std::min(mat4.numBlocksRow(), mat4.numBlocksCol()) == mat->nonZeroBlocks());
 
   MatT mat5;

@@ -35,19 +35,15 @@ public:
   DenseMatrixBlock();
 
   // with block
-  DenseMatrixBlock(const BlockDescriptor& blockDesc);
+  DenseMatrixBlock(const BlockDescriptor &blockDesc);
 
   virtual ~DenseMatrixBlock();
 
-  virtual void resize(const BlockDescriptor& blockDesc) override final;
+  virtual void resize(const BlockDescriptor &blockDesc) override final;
 
-  const StorageType& mat() const {
-    return _mat;
-  }
+  const StorageType &mat() const { return _mat; }
 
-  StorageType& mat() {
-    return _mat;
-  }
+  StorageType &mat() { return _mat; }
 
   inline BlockType block(int r, int c) {
     return _mat.template block<RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>(
@@ -89,7 +85,7 @@ private:
 
   typename SparsityPattern<Ordering>::CSPtr _sparsityPattern;
 
-  void createPattern(const SparsityPattern<Ordering>& sp);
+  void createPattern(const SparsityPattern<Ordering> &sp);
 
   inline int row(int outer, int inner) const {
     if (Ordering == csBlockMatrix::ColMajor) {
@@ -113,21 +109,17 @@ private:
 
 public:
   DenseMatrixBlockIterable();
-  DenseMatrixBlockIterable(const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp);
+  DenseMatrixBlockIterable(const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp);
 
   virtual ~DenseMatrixBlockIterable();
 
-  void resize(const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp);
+  void resize(const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp);
 
-  int nonZeroBlocks() const {
-    return int(_innerIndexes.size());
-  }
+  int nonZeroBlocks() const { return int(_innerIndexes.size()); }
 
   int blockUID(int r, int c) const;
 
-  bool hasBlock(int r, int c) {
-    return blockUID(r, c) >= 0;
-  }
+  bool hasBlock(int r, int c) { return blockUID(r, c) >= 0; }
 
   inline BlockType blockByUID(int uid) {
     int out = _uid2outer[uid];
@@ -145,25 +137,20 @@ public:
     return this->block(r, c);
   }
 
-  const typename SparsityPattern<Ordering>::CSPtr& sparsityPatternCSPtr() const {
-    return _sparsityPattern;
-  }
+  const typename SparsityPattern<Ordering>::CSPtr &sparsityPatternCSPtr() const { return _sparsityPattern; }
 
-  const SparsityPattern<Ordering>& sparsityPattern() const {
-    return *_sparsityPattern;
-  }
+  const SparsityPattern<Ordering> &sparsityPattern() const { return *_sparsityPattern; }
 
   // iterator on inner dimension
-  template <class BaseT>
-  class InnerIterator {
+  template <class BaseT> class InnerIterator {
     int _outer;
 
-    BaseT* _sm;
+    BaseT *_sm;
     int _curId;
     int _lastId;
 
   public:
-    InnerIterator(BaseT& _sm, int outer, int curId, int lastId);
+    InnerIterator(BaseT &_sm, int outer, int curId, int lastId);
     virtual ~InnerIterator();
 
     inline int operator()() const {
@@ -176,9 +163,7 @@ public:
       return _curId;
     }
 
-    inline int end() const {
-      return _lastId;
-    }
+    inline int end() const { return _lastId; }
 
     inline void operator++() {
       assert(_curId <= _lastId);
@@ -201,8 +186,7 @@ public:
       return _sm->col(_outer, inner);
     }
 
-    template <typename RetType = BlockType>
-    inline std::enable_if_t<!std::is_const<BaseT>::value, RetType> block() {
+    template <typename RetType = BlockType> inline std::enable_if_t<!std::is_const<BaseT>::value, RetType> block() {
       assert(_curId <= _lastId);
       int inner = _sm->_innerIndexes[_curId];
       int r = _sm->row(_outer, inner);
@@ -219,9 +203,7 @@ public:
     }
   };
 
-  int outerSize() const {
-    return int(_outerStarts.size() - 1);
-  }
+  int outerSize() const { return int(_outerStarts.size() - 1); }
 
   // iterate on inner, be careful if it is rows or cols depends on ordering
   InnerIterator<DenseMatrixBlockIterable> begin(int o) {

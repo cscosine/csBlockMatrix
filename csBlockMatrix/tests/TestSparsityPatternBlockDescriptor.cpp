@@ -12,42 +12,43 @@ static constexpr int numPoints = 5;
 static const std::vector<int> camSizeVar = {5, 7, 6};
 static const std::vector<int> pointSizeVar = {2, 3, 4, 5, 1};
 
-TEMPLATE_TEST_CASE_SIG("SparsityPatternBlockDescriptor", "[SparsityPatternBlockDescriptor]",
-                       ((int BR, int BC, int NBR, int NBC, int Ordering), BR, BC, NBR, NBC, Ordering),
-                       (camSize, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
-                        csBlockMatrix::ColMajor),
-                       (camSize, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
-                        csBlockMatrix::RowMajor)) {
+TEMPLATE_TEST_CASE_SIG(
+    "SparsityPatternBlockDescriptor", "[SparsityPatternBlockDescriptor]",
+    ((int BR, int BC, int NBR, int NBC, int Ordering), BR, BC, NBR, NBC, Ordering),
+    (camSize, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
+    (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::ColMajor),
+    (camSize, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
+    (camSize, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
+    (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::RowMajor)) {
 
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<BR, BC, NBR, NBC>;
 
@@ -155,11 +156,13 @@ TEMPLATE_TEST_CASE_SIG("SparsityPatternBlockDescriptor", "[SparsityPatternBlockD
 }
 
 TEMPLATE_TEST_CASE_SIG("SparsityPatternBlockDescriptor-Var", "[MatrixBlockDescriptor]",
-                       ((int NBR, int NBC, int Ordering), NBR, NBC, Ordering), (numCams, numPoints, csBlockMatrix::ColMajor),
+                       ((int NBR, int NBC, int Ordering), NBR, NBC, Ordering),
+                       (numCams, numPoints, csBlockMatrix::ColMajor),
                        (numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
-                       (numCams, numPoints, csBlockMatrix::RowMajor), (numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
+                       (numCams, numPoints, csBlockMatrix::RowMajor),
+                       (numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor)) {
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<csBlockMatrix::Variable, csBlockMatrix::Variable, NBR, NBC>;
@@ -278,11 +281,13 @@ TEMPLATE_TEST_CASE_SIG("SparsityPatternBlockDescriptor-VarFix", "[MatrixBlockDes
                        (csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor)) {
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::RowMajor)) {
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<csBlockMatrix::Variable, BC, NBR, NBC>;
   std::unique_ptr<MatDescT> mat;
   SECTION("default ctor") {
@@ -399,11 +404,13 @@ TEMPLATE_TEST_CASE_SIG("SparsityPatternBlockDescriptor-FixVar", "[MatrixBlockDes
                        (csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::ColMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::ColMajor),
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::ColMajor),
                        (csBlockMatrix::Dynamic, numCams, numPoints, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints, csBlockMatrix::RowMajor),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::RowMajor)) {
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::RowMajor)) {
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<BR, csBlockMatrix::Variable, NBR, NBC>;
   std::unique_ptr<MatDescT> mat;
   SECTION("default ctor") {

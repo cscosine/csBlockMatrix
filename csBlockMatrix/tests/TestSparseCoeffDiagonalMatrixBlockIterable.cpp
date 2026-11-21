@@ -14,7 +14,8 @@ static const std::vector<int> pointSizeVar = {2, 2, 3, 3, 4, 4, 5, 5, 1, 1};
 
 TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMatrixBlock]",
                        ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC), (camSize, pointSize, numCams, numPoints),
-                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic), (camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
+                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic),
+                       (camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
                        (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
                        (camSize, csBlockMatrix::Dynamic, numCams, numPoints),
                        (camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
@@ -27,7 +28,8 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMa
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::Dynamic)) {
 
   using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, csBlockMatrix::ColMajor, BR, BC, NBR, NBC>;
 
@@ -60,15 +62,16 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMa
   REQUIRE(mat2.numElementRows() == camSize * numCams);
   REQUIRE(mat2.numElementCols() == pointSize * numPoints);
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numPoints));
   REQUIRE(mat3.numElementRows() == camSize * numCams);
   REQUIRE(mat3.numElementCols() == pointSize * numPoints);
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
-      csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numPoints));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numPoints));
   REQUIRE(mat4.numElementRows() == camSize * numCams);
   REQUIRE(mat4.numElementCols() == pointSize * numPoints);
 
@@ -107,9 +110,9 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock", "[SparseCoeffDiagonalMa
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDiagonalMatrixBlock]", ((int BR, int NBR), BR, NBR),
-                       (camSize, numCams), (camSize, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numCams),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDiagonalMatrixBlock]",
+                       ((int BR, int NBR), BR, NBR), (camSize, numCams), (camSize, csBlockMatrix::Dynamic),
+                       (csBlockMatrix::Dynamic, numCams), (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
 
   using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, csBlockMatrix::ColMajor, BR, BR, NBR, NBR>;
 
@@ -143,15 +146,16 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDia
   REQUIRE(mat2.numElementRows() == camSize * numCams);
   REQUIRE(mat2.numElementCols() == camSize * numCams);
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
   REQUIRE(mat3.numElementRows() == camSize * numCams);
   REQUIRE(mat3.numElementCols() == camSize * numCams);
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
-      csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
   REQUIRE(mat4.numElementRows() == camSize * numCams);
   REQUIRE(mat4.numElementCols() == camSize * numCams);
 
@@ -190,9 +194,9 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDia
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Var", "[SparseCoeffDiagonalMatrixBlock]", ((int NBR, int NBC), NBR, NBC),
-                       (numCams, numPoints), (numCams, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Var", "[SparseCoeffDiagonalMatrixBlock]",
+                       ((int NBR, int NBC), NBR, NBC), (numCams, numPoints), (numCams, csBlockMatrix::Dynamic),
+                       (csBlockMatrix::Dynamic, numPoints), (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
   using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, csBlockMatrix::ColMajor, csBlockMatrix::Variable,
                                                              csBlockMatrix::Variable, NBR, NBC>;
   std::unique_ptr<MatT> mat;
@@ -226,15 +230,16 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Var", "[SparseCoeffDiagon
   REQUIRE(mat2.numElementRows() == camSize * numCams);
   REQUIRE(mat2.numElementCols() == pointSize * numPoints);
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numPoints));
   REQUIRE(mat3.numElementRows() == camSize * numCams);
   REQUIRE(mat3.numElementCols() == pointSize * numPoints);
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
-      csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numPoints));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numPoints));
   REQUIRE(mat4.numElementRows() == camSize * numCams);
   REQUIRE(mat4.numElementCols() == pointSize * numPoints);
 
@@ -274,8 +279,8 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Var", "[SparseCoeffDiagon
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDiagonalMatrixBlock]", ((int NBR), NBR), (numCams),
-                       (csBlockMatrix::Dynamic)) {
+TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDiagonalMatrixBlock]", ((int NBR), NBR),
+                       (numCams), (csBlockMatrix::Dynamic)) {
   using MatT = csBlockMatrix::SparseCoeffDiagonalMatrixBlock<double, csBlockMatrix::ColMajor, csBlockMatrix::Variable,
                                                              csBlockMatrix::Variable, NBR, NBR>;
   std::unique_ptr<MatT> mat;
@@ -310,14 +315,15 @@ TEMPLATE_TEST_CASE_SIG("SparseCoeffDiagonalMatrixBlock-Square", "[SparseCoeffDia
   MatT mat2(mat->blockDescriptor(), csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
   REQUIRE(std::min(mat2.numBlocksRow(), mat2.numBlocksCol()) == mat->nonZeroBlocks());
 
-  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()),
             csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
   REQUIRE(std::min(mat3.numBlocksRow(), mat3.numBlocksCol()) == mat->nonZeroBlocks());
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()),
-      csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()),
+              csBlockMatrix::SparsityPatternColMajor::makeDiagonal(numCams, numCams));
   REQUIRE(std::min(mat4.numBlocksRow(), mat4.numBlocksCol()) == mat->nonZeroBlocks());
 
   MatT mat5;

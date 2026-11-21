@@ -12,8 +12,9 @@ static constexpr int numPoints = 10;
 static const std::vector<int> camSizeVar = {5, 8, 6, 5};
 static const std::vector<int> pointSizeVar = {2, 2, 3, 3, 4, 4, 5, 5, 1, 1};
 
-TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor", "[MatrixBlockDescriptor]", ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC),
-                       (camSize, pointSize, numCams, numPoints), (camSize, pointSize, numCams, csBlockMatrix::Dynamic),
+TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor", "[MatrixBlockDescriptor]",
+                       ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC), (camSize, pointSize, numCams, numPoints),
+                       (camSize, pointSize, numCams, csBlockMatrix::Dynamic),
                        (camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
                        (camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
                        (camSize, csBlockMatrix::Dynamic, numCams, numPoints),
@@ -27,7 +28,8 @@ TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor", "[MatrixBlockDescriptor]", ((int
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::Dynamic)) {
 
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<BR, BC, NBR, NBC>;
 
@@ -59,7 +61,8 @@ TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor", "[MatrixBlockDescriptor]", ((int
 
   using MatDescT_transpose = csBlockMatrix::MatrixBlockDescriptor<BC, BR, NBC, NBR>;
 
-  std::unique_ptr<MatDescT_transpose> matTranspose(new MatDescT_transpose(mat->colDescriptionCSPtr(), mat->rowDescriptionCSPtr()));
+  std::unique_ptr<MatDescT_transpose> matTranspose(
+      new MatDescT_transpose(mat->colDescriptionCSPtr(), mat->rowDescriptionCSPtr()));
   for (int i = 0; i < matTranspose->numBlocksRow(); i++) {
     REQUIRE(matTranspose->rowBlockSize(i) == pointSize);
   }
@@ -77,8 +80,8 @@ TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor", "[MatrixBlockDescriptor]", ((int
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor-Square", "[MatrixBlockDescriptor]", ((int BR, int NBR), BR, NBR), (camSize, numCams),
-                       (camSize, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numCams),
+TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor-Square", "[MatrixBlockDescriptor]", ((int BR, int NBR), BR, NBR),
+                       (camSize, numCams), (camSize, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numCams),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
 
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<BR, BR, NBR, NBR>;
@@ -123,8 +126,8 @@ TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptor-Square", "[MatrixBlockDescriptor]"
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptorVar", "[MatrixBlockDescriptor]", ((int NBR, int NBC), NBR, NBC), (numCams, numPoints),
-                       (numCams, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numPoints),
+TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptorVar", "[MatrixBlockDescriptor]", ((int NBR, int NBC), NBR, NBC),
+                       (numCams, numPoints), (numCams, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numPoints),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
   using MatDescT = csBlockMatrix::MatrixBlockDescriptor<csBlockMatrix::Variable, csBlockMatrix::Variable, NBR, NBC>;
   std::unique_ptr<MatDescT> mat;
@@ -153,9 +156,11 @@ TEMPLATE_TEST_CASE_SIG("MatrixBlockDescriptorVar", "[MatrixBlockDescriptor]", ((
     REQUIRE(mat->colBlockSize(i) == pointSizeVar[i]);
   }
 
-  using MatDescT_transpose = csBlockMatrix::MatrixBlockDescriptor<csBlockMatrix::Variable, csBlockMatrix::Variable, NBC, NBR>;
+  using MatDescT_transpose =
+      csBlockMatrix::MatrixBlockDescriptor<csBlockMatrix::Variable, csBlockMatrix::Variable, NBC, NBR>;
 
-  std::unique_ptr<MatDescT_transpose> matTranspose(new MatDescT_transpose(mat->colDescriptionCSPtr(), mat->rowDescriptionCSPtr()));
+  std::unique_ptr<MatDescT_transpose> matTranspose(
+      new MatDescT_transpose(mat->colDescriptionCSPtr(), mat->rowDescriptionCSPtr()));
   for (int i = 0; i < matTranspose->numBlocksRow(); i++) {
     REQUIRE(matTranspose->rowBlockSize(i) == pointSizeVar[i]);
   }

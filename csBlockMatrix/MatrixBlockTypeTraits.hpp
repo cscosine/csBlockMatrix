@@ -10,8 +10,7 @@
 
 namespace csBlockMatrix {
 
-template <class T, int BR, int NBR = csBlockMatrix::Dynamic>
-class VectorBlockTraits {
+template <class T, int BR, int NBR = csBlockMatrix::Dynamic> class VectorBlockTraits {
 public:
   using BlockTraits = typename DimensionDescriptor<BR, NBR>::Traits;
 
@@ -37,7 +36,8 @@ public:
 
   using StorageType = Eigen::Matrix<T, RowTraits::numElementsAtCompileTime, ColTraits::numElementsAtCompileTime>;
   using SubMatrixType = Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
-  using BlockType = typename Eigen::Block<StorageType, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
+  using BlockType =
+      typename Eigen::Block<StorageType, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
   using ConstBlockType =
       typename Eigen::Block<const StorageType, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
 };
@@ -50,10 +50,11 @@ public:
   using RowTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorRow::Traits;
   using ColTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorCol::Traits;
 
-  using StorageType = std::vector<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>>;
+  using StorageType =
+      std::vector<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>>;
   using SubMatrixType = Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
-  using BlockType = SubMatrixType&;
-  using ConstBlockType = const SubMatrixType&;
+  using BlockType = SubMatrixType &;
+  using ConstBlockType = const SubMatrixType &;
 };
 
 //----------------------------------------------------------------------------------------------------
@@ -64,10 +65,11 @@ public:
   using RowTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorRow::Traits;
   using ColTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorCol::Traits;
 
-  using StorageType = std::vector<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>>;
+  using StorageType =
+      std::vector<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>>;
   using SubMatrixType = Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
-  using BlockType = SubMatrixType&;
-  using ConstBlockType = const SubMatrixType&;
+  using BlockType = SubMatrixType &;
+  using ConstBlockType = const SubMatrixType &;
 };
 
 //----------------------------------------------------------------------------------------------------
@@ -78,18 +80,18 @@ public:
   using RowTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorRow::Traits;
   using ColTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorCol::Traits;
 
-  template <int Ordering>
-  using StorageType = Eigen::SparseMatrix<T, Ordering>;
+  template <int Ordering> using StorageType = Eigen::SparseMatrix<T, Ordering>;
   using SubMatrixType = Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
 
   template <int Ordering>
-  using BlockType = Eigen::Map<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>, 0,
-                               Eigen::OuterStride<>>;
+  using BlockType =
+      Eigen::Map<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>, 0,
+                 Eigen::OuterStride<>>;
 
   template <int Ordering>
   using ConstBlockType =
-      Eigen::Map<const Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>, 0,
-                 Eigen::OuterStride<>>;
+      Eigen::Map<const Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>,
+                 0, Eigen::OuterStride<>>;
 };
 
 //----------------------------------------------------------------------------------------------------
@@ -100,16 +102,16 @@ public:
   using RowTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorRow::Traits;
   using ColTraits = typename MatrixBlockDescriptor<BR, BC, NBR, NBC>::DimensionDescriptorCol::Traits;
 
-  template <int Ordering>
-  using StorageType = Eigen::SparseMatrix<T, Ordering>;
+  template <int Ordering> using StorageType = Eigen::SparseMatrix<T, Ordering>;
   using SubMatrixType = Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime>;
 
   template <int Ordering>
-  using BlockType = Eigen::Map<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>>;
+  using BlockType =
+      Eigen::Map<Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>>;
 
   template <int Ordering>
-  using ConstBlockType =
-      Eigen::Map<const Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>>;
+  using ConstBlockType = Eigen::Map<
+      const Eigen::Matrix<T, RowTraits::blockSizeAtCompileTime, ColTraits::blockSizeAtCompileTime, Ordering>>;
 };
 
 } // namespace csBlockMatrix

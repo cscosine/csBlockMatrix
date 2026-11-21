@@ -44,32 +44,25 @@ private:
   typename SparsityPattern<Ordering>::CSPtr _sparsityPattern;
 
   template <class OuterDesc, class InnerDesc>
-  void populateSparseMat(const OuterDesc& outDesc, const InnerDesc& inDesc, int nnz);
+  void populateSparseMat(const OuterDesc &outDesc, const InnerDesc &inDesc, int nnz);
 
-  template <class OuterDesc, class InnerDesc>
-  int computeStrides(const OuterDesc& outDesc, const InnerDesc& inDesc);
+  template <class OuterDesc, class InnerDesc> int computeStrides(const OuterDesc &outDesc, const InnerDesc &inDesc);
 
   void resizeImpl();
 
 public:
   SparseCoeffDiagonalMatrixBlock();
-  SparseCoeffDiagonalMatrixBlock(const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp);
+  SparseCoeffDiagonalMatrixBlock(const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp);
 
   virtual ~SparseCoeffDiagonalMatrixBlock();
 
-  void resize(const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp);
+  void resize(const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp);
 
-  const StorageType& mat() const {
-    return _mat;
-  }
+  const StorageType &mat() const { return _mat; }
 
-  StorageType& mat() {
-    return _mat;
-  }
+  StorageType &mat() { return _mat; }
 
-  int nonZeroBlocks() const {
-    return int(_coeffOffsets.size());
-  }
+  int nonZeroBlocks() const { return int(_coeffOffsets.size()); }
 
   int blockUID(int r, int c) const {
     if (r == c && r < this->nonZeroBlocks()) {
@@ -78,35 +71,21 @@ public:
     return -1;
   }
 
-  bool hasBlock(int r, int c) {
-    return blockUID(r, c) >= 0;
-  }
+  bool hasBlock(int r, int c) { return blockUID(r, c) >= 0; }
 
-  inline BlockType blockByUID(int uid) {
-    return this->blockImpl(uid);
-  }
+  inline BlockType blockByUID(int uid) { return this->blockImpl(uid); }
 
-  inline ConstBlockType blockByUID(int uid) const {
-    return this->blockImpl(uid);
-  }
+  inline ConstBlockType blockByUID(int uid) const { return this->blockImpl(uid); }
 
-  inline BlockType block(int r, int c) {
-    return this->blockImpl(r);
-  }
+  inline BlockType block(int r, int c) { return this->blockImpl(r); }
 
-  inline ConstBlockType block(int r, int c) const {
-    return this->blockImpl(r);
-  }
+  inline ConstBlockType block(int r, int c) const { return this->blockImpl(r); }
 
   void setZero();
 
-  const typename SparsityPattern<Ordering>::CSPtr& sparsityPatternCSPtr() const {
-    return _sparsityPattern;
-  }
+  const typename SparsityPattern<Ordering>::CSPtr &sparsityPatternCSPtr() const { return _sparsityPattern; }
 
-  const SparsityPattern<Ordering>& sparsityPattern() const {
-    return *_sparsityPattern;
-  }
+  const SparsityPattern<Ordering> &sparsityPattern() const { return *_sparsityPattern; }
 
   inline int row(int outer, int inner) const {
     if (Ordering == csBlockMatrix::ColMajor) {
@@ -127,15 +106,14 @@ public:
       __MAT_ASSERT_FALSE();
     }
   }
-  template <class BaseT>
-  class InnerIterator {
+  template <class BaseT> class InnerIterator {
     int _curId;
-    BaseT* _sm;
+    BaseT *_sm;
 
     int _lastId;
 
   public:
-    InnerIterator(BaseT& sm, int id, int lastId);
+    InnerIterator(BaseT &sm, int id, int lastId);
     virtual ~InnerIterator();
 
     inline int operator()() const {
@@ -148,9 +126,7 @@ public:
       return _curId;
     }
 
-    inline int end() const {
-      return _lastId;
-    }
+    inline int end() const { return _lastId; }
 
     inline void operator++() {
       assert(_curId <= _lastId);
@@ -171,8 +147,7 @@ public:
       return _curId;
     }
 
-    template <typename RetType = BlockType>
-    inline std::enable_if_t<!std::is_const<BaseT>::value, RetType> block() {
+    template <typename RetType = BlockType> inline std::enable_if_t<!std::is_const<BaseT>::value, RetType> block() {
       assert(_curId <= _lastId);
       return _sm->blockByUID(_curId);
     }
@@ -183,9 +158,7 @@ public:
     }
   };
 
-  int outerSize() const {
-    return nonZeroBlocks();
-  }
+  int outerSize() const { return nonZeroBlocks(); }
 
   // iterate on inner, be careful if it is rows or cols depends on ordering (no matter in this case, diagonal)
   InnerIterator<SparseCoeffDiagonalMatrixBlock> begin(int o) {
@@ -214,9 +187,7 @@ public:
     return InnerIterator<const SparseCoeffDiagonalMatrixBlock>(*this, o, (o < this->nonZeroBlocks() ? o + 1 : o));
   }
 
-  inline int blockCoeffStart(int outer, int inner) const {
-    return _coeffOffsets(outer);
-  }
+  inline int blockCoeffStart(int outer, int inner) const { return _coeffOffsets(outer); }
   int blockCoeffStride(int outer) const;
 };
 

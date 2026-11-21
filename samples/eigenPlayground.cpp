@@ -1,7 +1,7 @@
 #include <Eigen/Core>
-#include <csCore/core/OpenMP.hpp>
 #include <Eigen/Sparse>
 #include <chrono>
+#include <csCore/core/OpenMP.hpp>
 #include <iostream>
 #include <vector>
 
@@ -51,13 +51,13 @@ std::chrono::steady_clock::time_point testSetZeroTimeParallel() {
   std::vector<Eigen::Matrix<double, S, S>> m(N);
   auto t1 = std::chrono::steady_clock::now();
 
-CS_OMP(parallel for default(shared) schedule(static))
+  CS_OMP(parallel for default(shared) schedule(static))
   for (int i = 0; i < N; i++) {
     m[i].setZero();
   }
   auto t2 = std::chrono::steady_clock::now();
 
-CS_OMP(parallel for default(shared) schedule(static))
+  CS_OMP(parallel for default(shared) schedule(static))
   for (int i = 0; i < N; i++) {
     m[i].setIdentity();
   }
@@ -135,7 +135,7 @@ std::chrono::steady_clock::time_point testSetZeroSingleMatTime() {
   }
   auto t3 = std::chrono::steady_clock::now();
 
-CS_OMP(parallel for default(shared) schedule(static))
+  CS_OMP(parallel for default(shared) schedule(static))
   for (int i = 0; i < N; i++) {
     m.block<S, S>(0, i * S, S, S).setIdentity();
   }
@@ -243,7 +243,7 @@ void testMapWithStride() {
   }
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   // what is inside Block?
   testBlocks();
 

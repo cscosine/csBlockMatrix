@@ -11,7 +11,8 @@ static constexpr int numCams = 10;
 static constexpr int numPoints = 13;
 
 TEMPLATE_TEST_CASE_SIG(
-    "SparseMatrixBlock", "[SparseMatrixBlock]", ((int Ordering, int BR, int BC, int NBR, int NBC), Ordering, BR, BC, NBR, NBC),
+    "SparseMatrixBlock", "[SparseMatrixBlock]",
+    ((int Ordering, int BR, int BC, int NBR, int NBC), Ordering, BR, BC, NBR, NBC),
     (csBlockMatrix::RowMajor, camSize, pointSize, numCams, numPoints),
     (csBlockMatrix::RowMajor, camSize, pointSize, numCams, csBlockMatrix::Dynamic),
     (csBlockMatrix::RowMajor, camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
@@ -27,7 +28,8 @@ TEMPLATE_TEST_CASE_SIG(
     (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
     (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
     (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::Dynamic),
     (csBlockMatrix::ColMajor, camSize, pointSize, numCams, numPoints),
     (csBlockMatrix::ColMajor, camSize, pointSize, numCams, csBlockMatrix::Dynamic),
     (csBlockMatrix::ColMajor, camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
@@ -43,7 +45,8 @@ TEMPLATE_TEST_CASE_SIG(
     (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
     (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
     (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::Dynamic)) {
   auto sp = std::make_shared<csBlockMatrix::SparsityPattern<Ordering>>(numCams, numPoints);
   int count = 0;
   for (int k = 0; k < 2; k++) {
@@ -89,13 +92,15 @@ TEMPLATE_TEST_CASE_SIG(
   REQUIRE(mat->numElementCols() == pointSize * numPoints);
 }
 
-TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-RowMajor", "[SparseMatrixBlock]", ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC),
-                       (2, 3, 3, 4), (2, 3, 3, Eigen::Dynamic), (2, 3, Eigen::Dynamic, 4), (2, 3, Eigen::Dynamic, Eigen::Dynamic),
-                       (2, Eigen::Dynamic, 3, 4), (2, Eigen::Dynamic, 3, Eigen::Dynamic), (2, Eigen::Dynamic, Eigen::Dynamic, 4),
+TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-RowMajor", "[SparseMatrixBlock]",
+                       ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC), (2, 3, 3, 4), (2, 3, 3, Eigen::Dynamic),
+                       (2, 3, Eigen::Dynamic, 4), (2, 3, Eigen::Dynamic, Eigen::Dynamic), (2, Eigen::Dynamic, 3, 4),
+                       (2, Eigen::Dynamic, 3, Eigen::Dynamic), (2, Eigen::Dynamic, Eigen::Dynamic, 4),
                        (2, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, 3, 3, 4),
                        (Eigen::Dynamic, 3, 3, Eigen::Dynamic), (Eigen::Dynamic, 3, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, 3, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, 3, 4),
-                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
+                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic),
+                       (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic)) {
   // +-----------------------+
   // | 0.0 | --- | --- | 0.3 |
@@ -188,7 +193,7 @@ TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-RowMajor", "[SparseMatrixBlock]", ((in
   }
 
   {
-    const auto& matC = mat;
+    const auto &matC = mat;
     auto it = matC.rowBegin(0);
     REQUIRE(it() == 0);
     REQUIRE(it.col() == 0);
@@ -232,13 +237,15 @@ TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-RowMajor", "[SparseMatrixBlock]", ((in
 //-------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------
 
-TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-ColMajor", "[SparseMatrixBlock]", ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC),
-                       (2, 3, 3, 4), (2, 3, 3, Eigen::Dynamic), (2, 3, Eigen::Dynamic, 4), (2, 3, Eigen::Dynamic, Eigen::Dynamic),
-                       (2, Eigen::Dynamic, 3, 4), (2, Eigen::Dynamic, 3, Eigen::Dynamic), (2, Eigen::Dynamic, Eigen::Dynamic, 4),
+TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-ColMajor", "[SparseMatrixBlock]",
+                       ((int BR, int BC, int NBR, int NBC), BR, BC, NBR, NBC), (2, 3, 3, 4), (2, 3, 3, Eigen::Dynamic),
+                       (2, 3, Eigen::Dynamic, 4), (2, 3, Eigen::Dynamic, Eigen::Dynamic), (2, Eigen::Dynamic, 3, 4),
+                       (2, Eigen::Dynamic, 3, Eigen::Dynamic), (2, Eigen::Dynamic, Eigen::Dynamic, 4),
                        (2, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, 3, 3, 4),
                        (Eigen::Dynamic, 3, 3, Eigen::Dynamic), (Eigen::Dynamic, 3, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, 3, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, 3, 4),
-                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
+                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic),
+                       (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic)) {
   // +-----------------------+
   // | 0.0 | --- | --- | 0.3 |
@@ -354,7 +361,7 @@ TEMPLATE_TEST_CASE_SIG("SparseMatrixBlock-ColMajor", "[SparseMatrixBlock]", ((in
   }
 
   {
-    const auto& matC = mat;
+    const auto &matC = mat;
     auto it = matC.colBegin(0);
     REQUIRE(it() == 0);
     REQUIRE(it.row() == 0);

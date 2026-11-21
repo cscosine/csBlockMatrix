@@ -19,13 +19,12 @@ SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::SparseCoeffDiagon
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::SparseCoeffDiagonalMatrixBlock(
-    const BlockDescriptor& blockDesc, const typename SparsityPattern<Ordering>::CSPtr& sp)
-    : MatrixBlockBase<BR, BC, NBR, NBC>(blockDesc)
-    , _sparsityPattern(sp) {
+    const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp)
+    : MatrixBlockBase<BR, BC, NBR, NBC>(blockDesc), _sparsityPattern(sp) {
 #ifndef NDEBUG
   // check sparse pattern is diagonal (debug only)
   for (int o = 0; o < std::min(sp->outerSize(), sp->innerSize()); o++) {
-    const auto& ins = sp->inner(o);
+    const auto &ins = sp->inner(o);
     assert(ins.size() == 1);
     assert(*(ins.begin()) == o);
   }
@@ -40,11 +39,13 @@ SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::~SparseCoeffDiago
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class OuterDesc, class InnerDesc>
-int SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::computeStrides(const OuterDesc& outDesc, const InnerDesc& inDesc) {
+int SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::computeStrides(const OuterDesc &outDesc,
+                                                                                  const InnerDesc &inDesc) {
   _coeffOffsets.resize(std::min(outDesc.numBlocks(), inDesc.numBlocks()));
 
   int offset = 0;
-  if (InnerDesc::Traits::blockType == csBlockMatrix::Variable || OuterDesc::Traits::blockType == csBlockMatrix::Variable) {
+  if (InnerDesc::Traits::blockType == csBlockMatrix::Variable ||
+      OuterDesc::Traits::blockType == csBlockMatrix::Variable) {
     for (int oi = 0; oi < _coeffOffsets.size(); oi++) {
       _coeffOffsets(oi) = offset;
       offset += (inDesc.blockSize(oi) * outDesc.blockSize(oi));
@@ -61,8 +62,9 @@ int SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::computeStride
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class OuterDesc, class InnerDesc>
-void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::populateSparseMat(const OuterDesc& outDesc,
-                                                                                      const InnerDesc& inDesc, int nnz) {
+void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::populateSparseMat(const OuterDesc &outDesc,
+                                                                                      const InnerDesc &inDesc,
+                                                                                      int nnz) {
   _mat.resize(this->numElementRows(), this->numElementCols());
   _mat.reserve(nnz);
 
@@ -91,7 +93,7 @@ void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::populateSpar
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resizeImpl() {
 
-  const auto& bd = this->blockDescriptor();
+  const auto &bd = this->blockDescriptor();
   // populate the matrix
   if (Ordering == csBlockMatrix::ColMajor) {
     int nnz = computeStrides(bd.colDescription(), bd.rowDescription());
@@ -104,8 +106,8 @@ void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resizeImpl()
 }
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
-void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resize(const BlockDescriptor& blockDesc,
-                                                                           const typename SparsityPattern<Ordering>::CSPtr& sp) {
+void SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::resize(
+    const BlockDescriptor &blockDesc, const typename SparsityPattern<Ordering>::CSPtr &sp) {
   MatrixBlockBase<BR, BC, NBR, NBC>::resize(blockDesc);
   _sparsityPattern = sp;
   this->resizeImpl();
@@ -120,18 +122,18 @@ template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 int SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::blockCoeffStride(int outer) const {
   if (Ordering == csBlockMatrix::ColMajor) {
     if (ColTraits::blockType == csBlockMatrix::Variable || RowTraits::blockType == csBlockMatrix::Variable) {
-      const auto& bd = this->blockDescriptor();
+      const auto &bd = this->blockDescriptor();
       return bd.colDescription().blockSize(outer);
     } else {
-      const auto& bd = this->blockDescriptor();
+      const auto &bd = this->blockDescriptor();
       return bd.colDescription().uniqueBlockSize();
     }
   } else if (Ordering == csBlockMatrix::RowMajor) {
     if (ColTraits::blockType == csBlockMatrix::Variable || RowTraits::blockType == csBlockMatrix::Variable) {
-      const auto& bd = this->blockDescriptor();
+      const auto &bd = this->blockDescriptor();
       return bd.rowDescription().blockSize(outer);
     } else {
-      const auto& bd = this->blockDescriptor();
+      const auto &bd = this->blockDescriptor();
       return bd.rowDescription().uniqueBlockSize();
     }
   } else
@@ -142,10 +144,9 @@ int SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::blockCoeffStr
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class BaseT>
-SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT& sm, int id, int lastId)
-    : _curId(id)
-    , _sm(&sm)
-    , _lastId(lastId) {}
+SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::InnerIterator(BaseT &sm, int id,
+                                                                                                   int lastId)
+    : _curId(id), _sm(&sm), _lastId(lastId) {}
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>
 template <class BaseT>
 SparseCoeffDiagonalMatrixBlock<T, Ordering, BR, BC, NBR, NBC>::InnerIterator<BaseT>::~InnerIterator() {}

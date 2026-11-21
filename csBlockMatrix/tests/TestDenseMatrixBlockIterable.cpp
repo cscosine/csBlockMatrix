@@ -10,42 +10,43 @@ static constexpr int pointSize = 3;
 static constexpr int numCams = 10;
 static constexpr int numPoints = 13;
 
-TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockIterable", "[DenseMatrixBlockIterable]",
-                       ((int Ordering, int BR, int BC, int NBR, int NBC), Ordering, BR, BC, NBR, NBC),
-                       (csBlockMatrix::RowMajor, camSize, pointSize, numCams, numPoints),
-                       (csBlockMatrix::RowMajor, camSize, pointSize, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::RowMajor, camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, numCams, numPoints),
-                       (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, numCams, numPoints),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
-                        csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, camSize, pointSize, numCams, numPoints),
-                       (csBlockMatrix::ColMajor, camSize, pointSize, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::ColMajor, camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, numCams, numPoints),
-                       (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, numCams, numPoints),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
-                        csBlockMatrix::Dynamic)) {
+TEMPLATE_TEST_CASE_SIG(
+    "DenseMatrixBlockIterable", "[DenseMatrixBlockIterable]",
+    ((int Ordering, int BR, int BC, int NBR, int NBC), Ordering, BR, BC, NBR, NBC),
+    (csBlockMatrix::RowMajor, camSize, pointSize, numCams, numPoints),
+    (csBlockMatrix::RowMajor, camSize, pointSize, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::RowMajor, camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, numCams, numPoints),
+    (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::RowMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, numCams, numPoints),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::RowMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, camSize, pointSize, numCams, numPoints),
+    (csBlockMatrix::ColMajor, camSize, pointSize, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, camSize, pointSize, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::ColMajor, camSize, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, numCams, numPoints),
+    (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::ColMajor, camSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, numCams, numPoints),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, pointSize, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
+    (csBlockMatrix::ColMajor, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+     csBlockMatrix::Dynamic)) {
   auto sp = std::make_shared<csBlockMatrix::SparsityPattern<Ordering>>(numCams, numPoints);
   int count = 0;
   for (int k = 0; k < 2; k++) {
@@ -96,7 +97,8 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockIterable-RowMajor", "[DenseMatrixBlockIt
                        (2, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, 3, 3, 4),
                        (Eigen::Dynamic, 3, 3, Eigen::Dynamic), (Eigen::Dynamic, 3, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, 3, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, 3, 4),
-                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
+                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic),
+                       (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic)) {
   // +-----------------------+
   // | 0.0 | --- | --- | 0.3 |
@@ -188,7 +190,7 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockIterable-RowMajor", "[DenseMatrixBlockIt
   }
 
   {
-    const auto& matC = mat;
+    const auto &matC = mat;
     auto it = matC.rowBegin(0);
     REQUIRE(it() == 0);
     REQUIRE(it.col() == 0);
@@ -239,7 +241,8 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockIterable-ColMajor", "[DenseMatrixBlockIt
                        (2, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, 3, 3, 4),
                        (Eigen::Dynamic, 3, 3, Eigen::Dynamic), (Eigen::Dynamic, 3, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, 3, Eigen::Dynamic, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, 3, 4),
-                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic), (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
+                       (Eigen::Dynamic, Eigen::Dynamic, 3, Eigen::Dynamic),
+                       (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, 4),
                        (Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic, Eigen::Dynamic)) {
   // +-----------------------+
   // | 0.0 | --- | --- | 0.3 |
@@ -355,7 +358,7 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockIterable-ColMajor", "[DenseMatrixBlockIt
   }
 
   {
-    const auto& matC = mat;
+    const auto &matC = mat;
     auto it = matC.colBegin(0);
     REQUIRE(it() == 0);
     REQUIRE(it.row() == 0);
