@@ -7,7 +7,8 @@
 #include <type_traits>
 
 TEMPLATE_TEST_CASE_SIG("DimensionDescriptor<3|Dynamic>", "[DimensionDescriptor]", ((int B, int NB), B, NB), (3, 5),
-                       (3, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, 5), (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+                       (3, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, 5),
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
 
   std::unique_ptr<csBlockMatrix::DimensionDescriptor<B, NB>> d;
   SECTION("Default ctor") {
@@ -80,9 +81,7 @@ TEMPLATE_TEST_CASE_SIG("DimensionDescriptor<csBlockMatrix::Variable|5>", "[Dimen
   }
   SECTION("Block-size ctor") {
 
-    SECTION("vector only") {
-      d.reset(new csBlockMatrix::DimensionDescriptor<B, NB>(blockSizes));
-    }
+    SECTION("vector only") { d.reset(new csBlockMatrix::DimensionDescriptor<B, NB>(blockSizes)); }
     SECTION("vector + size only") {
       d.reset(new csBlockMatrix::DimensionDescriptor<B, NB>(blockSizes, int(blockSizes.size())));
     }

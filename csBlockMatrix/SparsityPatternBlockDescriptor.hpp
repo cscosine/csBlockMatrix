@@ -5,49 +5,35 @@
 
 namespace csBlockMatrix {
 
-template <int Ordering>
-class SparsityPattern;
-template <int BR, int BC, int NBR, int NBC>
-class MatrixBlockDescriptor;
+template <int Ordering> class SparsityPattern;
+template <int BR, int BC, int NBR, int NBC> class MatrixBlockDescriptor;
 
-template <int Ordering>
-class SparsityPatternBlockDescriptor {
+template <int Ordering> class SparsityPatternBlockDescriptor {
   int _nonZeroCoeffs;
   std::vector<int> _outerStrides;
   std::vector<std::vector<int>> _offsets;
 
   template <class OuterDesc, class InnerDesc>
-  void computeStrides(const SparsityPattern<Ordering>& sp, const OuterDesc& outDesc, const InnerDesc& inDesc);
+  void computeStrides(const SparsityPattern<Ordering> &sp, const OuterDesc &outDesc, const InnerDesc &inDesc);
 
 public:
   template <int BR, int BC, int NBR, int NBC>
-  SparsityPatternBlockDescriptor(const SparsityPattern<Ordering>& sp, const MatrixBlockDescriptor<BR, BC, NBR, NBC>& bd);
+  SparsityPatternBlockDescriptor(const SparsityPattern<Ordering> &sp,
+                                 const MatrixBlockDescriptor<BR, BC, NBR, NBC> &bd);
 
   virtual ~SparsityPatternBlockDescriptor();
 
-  int nonZeroCoeffs() const {
-    return _nonZeroCoeffs;
-  }
+  int nonZeroCoeffs() const { return _nonZeroCoeffs; }
 
-  int outerSize() const {
-    return _outerStrides.size();
-  }
+  int outerSize() const { return _outerStrides.size(); }
 
-  int stride(int outer) const {
-    return _outerStrides[outer];
-  }
+  int stride(int outer) const { return _outerStrides[outer]; }
 
-  const std::vector<int>& outerStrides() const {
-    return _outerStrides;
-  }
+  const std::vector<int> &outerStrides() const { return _outerStrides; }
 
-  const std::vector<int>& offsets(int oi) const {
-    return _offsets[oi];
-  }
+  const std::vector<int> &offsets(int oi) const { return _offsets[oi]; }
 
-  int offset(int outer, int inner) const {
-    return _offsets[outer][inner];
-  }
+  int offset(int outer, int inner) const { return _offsets[outer][inner]; }
 };
 
 } // namespace csBlockMatrix

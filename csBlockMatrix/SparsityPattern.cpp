@@ -2,9 +2,7 @@
 
 namespace csBlockMatrix {
 
-template <int Ordering>
-SparsityPattern<Ordering>::SparsityPattern(int nr, int nc)
-    : _count(0) {
+template <int Ordering> SparsityPattern<Ordering>::SparsityPattern(int nr, int nc) : _count(0) {
   if (Ordering == csBlockMatrix::ColMajor) {
     _sp.resize(nc);
     _innerSize = nr;
@@ -16,11 +14,9 @@ SparsityPattern<Ordering>::SparsityPattern(int nr, int nc)
   }
 }
 
-template <int Ordering>
-SparsityPattern<Ordering>::~SparsityPattern() {}
+template <int Ordering> SparsityPattern<Ordering>::~SparsityPattern() {}
 
-template <int Ordering>
-Eigen::SparseMatrix<int, Ordering> SparsityPattern<Ordering>::toSparseMatrix() const {
+template <int Ordering> Eigen::SparseMatrix<int, Ordering> SparsityPattern<Ordering>::toSparseMatrix() const {
 
   Eigen::SparseMatrix<int, Ordering> mat;
   if (Ordering == csBlockMatrix::ColMajor) {
@@ -50,8 +46,7 @@ typename SparsityPattern<Ordering>::CSPtr SparsityPattern<Ordering>::makeDiagona
   return ret;
 }
 
-template <int Ordering>
-void SparsityPattern<Ordering>::clear() {
+template <int Ordering> void SparsityPattern<Ordering>::clear() {
   for (int k = 0; k < _sp.size(); k++) {
     _sp[k].clear();
   }

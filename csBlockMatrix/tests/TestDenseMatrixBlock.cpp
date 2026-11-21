@@ -27,7 +27,8 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock", "[DenseMatrixBlock]", ((int BR, int B
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, numPoints),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numCams, csBlockMatrix::Dynamic),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, numPoints),
-                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
+                       (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic, csBlockMatrix::Dynamic,
+                        csBlockMatrix::Dynamic)) {
 
   using MatT = csBlockMatrix::DenseMatrixBlock<double, BR, BC, NBR, NBC>;
 
@@ -37,8 +38,10 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock", "[DenseMatrixBlock]", ((int BR, int B
     REQUIRE(mat->numBlocksRow() == (NBR == csBlockMatrix::Dynamic ? 0 : NBR));
     REQUIRE(mat->numBlocksCol() == (NBC == csBlockMatrix::Dynamic ? 0 : NBC));
 
-    REQUIRE(mat->mat().rows() == (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : camSize * numCams));
-    REQUIRE(mat->mat().cols() == (NBC == csBlockMatrix::Dynamic || BC == csBlockMatrix::Dynamic ? 0 : pointSize * numPoints));
+    REQUIRE(mat->mat().rows() ==
+            (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : camSize * numCams));
+    REQUIRE(mat->mat().cols() ==
+            (NBC == csBlockMatrix::Dynamic || BC == csBlockMatrix::Dynamic ? 0 : pointSize * numPoints));
 
     mat->resize(typename MatT::BlockDescriptor(camSize, numCams, pointSize, numPoints));
   }
@@ -63,16 +66,16 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock", "[DenseMatrixBlock]", ((int BR, int B
   REQUIRE(mat2.numElementRows() == mat2.mat().rows());
   REQUIRE(mat2.numElementCols() == mat2.mat().cols());
 
-  MatT mat3(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat3.numElementRows() == mat->mat().rows());
   REQUIRE(mat3.numElementCols() == mat->mat().cols());
   REQUIRE(mat3.numElementRows() == mat3.mat().rows());
   REQUIRE(mat3.numElementCols() == mat3.mat().cols());
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat4.numElementRows() == mat->mat().rows());
   REQUIRE(mat4.numElementCols() == mat->mat().cols());
   REQUIRE(mat4.numElementRows() == mat4.mat().rows());
@@ -101,8 +104,8 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock", "[DenseMatrixBlock]", ((int BR, int B
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock-Square", "[DenseMatrixBlock]", ((int BR, int NBR), BR, NBR), (camSize, numCams),
-                       (camSize, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numCams),
+TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock-Square", "[DenseMatrixBlock]", ((int BR, int NBR), BR, NBR),
+                       (camSize, numCams), (camSize, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numCams),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
 
   using MatT = csBlockMatrix::DenseMatrixBlock<double, BR, BR, NBR, NBR>;
@@ -113,8 +116,10 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock-Square", "[DenseMatrixBlock]", ((int BR
     REQUIRE(mat->numBlocksRow() == (NBR == csBlockMatrix::Dynamic ? 0 : NBR));
     REQUIRE(mat->numBlocksCol() == (NBR == csBlockMatrix::Dynamic ? 0 : NBR));
 
-    REQUIRE(mat->mat().rows() == (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : camSize * numCams));
-    REQUIRE(mat->mat().cols() == (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : camSize * numCams));
+    REQUIRE(mat->mat().rows() ==
+            (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : camSize * numCams));
+    REQUIRE(mat->mat().cols() ==
+            (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : camSize * numCams));
 
     mat->resize(MatT::BlockDescriptor::squareMatrix(camSize, numCams));
   }
@@ -139,16 +144,16 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock-Square", "[DenseMatrixBlock]", ((int BR
   REQUIRE(mat2.numElementRows() == mat2.mat().rows());
   REQUIRE(mat2.numElementCols() == mat2.mat().cols());
 
-  MatT mat3(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat3.numElementRows() == mat->mat().rows());
   REQUIRE(mat3.numElementCols() == mat->mat().cols());
   REQUIRE(mat3.numElementRows() == mat3.mat().rows());
   REQUIRE(mat3.numElementCols() == mat3.mat().cols());
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat4.numElementRows() == mat->mat().rows());
   REQUIRE(mat4.numElementCols() == mat->mat().cols());
   REQUIRE(mat4.numElementRows() == mat4.mat().rows());
@@ -177,8 +182,8 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlock-Square", "[DenseMatrixBlock]", ((int BR
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar", "[DenseMatrixBlock]", ((int NBR, int NBC), NBR, NBC), (numCams, numPoints),
-                       (numCams, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numPoints),
+TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar", "[DenseMatrixBlock]", ((int NBR, int NBC), NBR, NBC),
+                       (numCams, numPoints), (numCams, csBlockMatrix::Dynamic), (csBlockMatrix::Dynamic, numPoints),
                        (csBlockMatrix::Dynamic, csBlockMatrix::Dynamic)) {
   using MatT = csBlockMatrix::DenseMatrixBlock<double, csBlockMatrix::Variable, csBlockMatrix::Variable, NBR, NBC>;
   std::unique_ptr<MatT> mat;
@@ -214,16 +219,16 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar", "[DenseMatrixBlock]", ((int NBR, i
   REQUIRE(mat2.numElementRows() == mat2.mat().rows());
   REQUIRE(mat2.numElementCols() == mat2.mat().cols());
 
-  MatT mat3(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat3.numElementRows() == mat->mat().rows());
   REQUIRE(mat3.numElementCols() == mat->mat().cols());
   REQUIRE(mat3.numElementRows() == mat3.mat().rows());
   REQUIRE(mat3.numElementCols() == mat3.mat().cols());
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat4.numElementRows() == mat->mat().rows());
   REQUIRE(mat4.numElementCols() == mat->mat().cols());
   REQUIRE(mat4.numElementRows() == mat4.mat().rows());
@@ -252,7 +257,8 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar", "[DenseMatrixBlock]", ((int NBR, i
   }
 }
 
-TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar-Square", "[DenseMatrixBlock]", ((int NBR), NBR), (numCams), (csBlockMatrix::Dynamic)) {
+TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar-Square", "[DenseMatrixBlock]", ((int NBR), NBR), (numCams),
+                       (csBlockMatrix::Dynamic)) {
   using MatT = csBlockMatrix::DenseMatrixBlock<double, csBlockMatrix::Variable, csBlockMatrix::Variable, NBR, NBR>;
   std::unique_ptr<MatT> mat;
   SECTION("default ctor") {
@@ -292,16 +298,16 @@ TEMPLATE_TEST_CASE_SIG("DenseMatrixBlockVar-Square", "[DenseMatrixBlock]", ((int
   REQUIRE(mat2.numElementRows() == mat2.mat().rows());
   REQUIRE(mat2.numElementCols() == mat2.mat().cols());
 
-  MatT mat3(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  MatT mat3(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                           mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat3.numElementRows() == mat->mat().rows());
   REQUIRE(mat3.numElementCols() == mat->mat().cols());
   REQUIRE(mat3.numElementRows() == mat3.mat().rows());
   REQUIRE(mat3.numElementCols() == mat3.mat().cols());
 
   MatT mat4;
-  mat4.resize(
-      typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(), mat->blockDescriptor().colDescriptionCSPtr()));
+  mat4.resize(typename MatT::BlockDescriptor(mat->blockDescriptor().rowDescriptionCSPtr(),
+                                             mat->blockDescriptor().colDescriptionCSPtr()));
   REQUIRE(mat4.numElementRows() == mat->mat().rows());
   REQUIRE(mat4.numElementCols() == mat->mat().cols());
   REQUIRE(mat4.numElementRows() == mat4.mat().rows());

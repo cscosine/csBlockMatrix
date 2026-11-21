@@ -9,11 +9,9 @@ namespace csBlockMatrix {
 
 template <int Ordering>
 template <int BR, int BC, int NBR, int NBC>
-SparsityPatternBlockDescriptor<Ordering>::SparsityPatternBlockDescriptor(const SparsityPattern<Ordering>& sp,
-                                                                         const MatrixBlockDescriptor<BR, BC, NBR, NBC>& bd)
-    : _outerStrides(sp.outerSize())
-    , _offsets(sp.outerSize())
-    , _nonZeroCoeffs(0) {
+SparsityPatternBlockDescriptor<Ordering>::SparsityPatternBlockDescriptor(
+    const SparsityPattern<Ordering> &sp, const MatrixBlockDescriptor<BR, BC, NBR, NBC> &bd)
+    : _outerStrides(sp.outerSize()), _offsets(sp.outerSize()), _nonZeroCoeffs(0) {
 
   if (Ordering == csBlockMatrix::ColMajor) {
     computeStrides(sp, bd.colDescription(), bd.rowDescription());
@@ -23,16 +21,15 @@ SparsityPatternBlockDescriptor<Ordering>::SparsityPatternBlockDescriptor(const S
     __MAT_ASSERT_FALSE();
 }
 
-template <int Ordering>
-SparsityPatternBlockDescriptor<Ordering>::~SparsityPatternBlockDescriptor() {}
+template <int Ordering> SparsityPatternBlockDescriptor<Ordering>::~SparsityPatternBlockDescriptor() {}
 
 template <int Ordering>
 template <class OuterDesc, class InnerDesc>
-void SparsityPatternBlockDescriptor<Ordering>::computeStrides(const SparsityPattern<Ordering>& sp, const OuterDesc& outDesc,
-                                                              const InnerDesc& inDesc) {
+void SparsityPatternBlockDescriptor<Ordering>::computeStrides(const SparsityPattern<Ordering> &sp,
+                                                              const OuterDesc &outDesc, const InnerDesc &inDesc) {
   int offset = 0;
   for (int oi = 0; oi < _outerStrides.size(); oi++) {
-    const auto& blocksInner = sp.inner(oi);
+    const auto &blocksInner = sp.inner(oi);
 
     if (InnerDesc::Traits::blockType == csBlockMatrix::Variable) {
       int coeff_stride = 0;

@@ -11,8 +11,7 @@
 
 namespace csBlockMatrix {
 
-template <int Ordering>
-class SparsityPattern {
+template <int Ordering> class SparsityPattern {
   std::vector<std::set<int>> _sp;
   int _innerSize;
   int _count;
@@ -62,23 +61,15 @@ public:
     }
   }
 
-  int count() const {
-    return _count;
-  }
+  int count() const { return _count; }
 
   // if rowmajor, outer is "i", return is the list of occupied cols
   // if colmajor, outer is "j", return is the list of occupied rows
-  const std::set<int>& inner(int outer) const {
-    return _sp[outer];
-  }
+  const std::set<int> &inner(int outer) const { return _sp[outer]; }
 
-  int outerSize() const {
-    return _sp.size();
-  }
+  int outerSize() const { return _sp.size(); }
 
-  int innerSize() const {
-    return _innerSize;
-  }
+  int innerSize() const { return _innerSize; }
 
   Eigen::SparseMatrix<int, Ordering> toSparseMatrix() const;
 };

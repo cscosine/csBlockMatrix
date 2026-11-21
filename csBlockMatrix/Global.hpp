@@ -19,21 +19,17 @@ constexpr int SparseCoeffBlockDiagonal = 5;
 constexpr int ColMajor = 0;
 constexpr int RowMajor = 1;
 
-template <int Ordering>
-struct IsColMajor {
+template <int Ordering> struct IsColMajor {
   static constexpr bool value = false;
 };
-template <>
-struct IsColMajor<ColMajor> {
+template <> struct IsColMajor<ColMajor> {
   static constexpr bool value = true;
 };
 
-template <int Ordering>
-struct IsRowMajor {
+template <int Ordering> struct IsRowMajor {
   static constexpr bool value = false;
 };
-template <>
-struct IsRowMajor<RowMajor> {
+template <> struct IsRowMajor<RowMajor> {
   static constexpr bool value = true;
 };
 

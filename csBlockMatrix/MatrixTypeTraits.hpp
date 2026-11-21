@@ -13,7 +13,8 @@
 
 namespace csBlockMatrix {
 
-template <int matType, class T, int Ordering, int BR, int BC, int NBR = csBlockMatrix::Dynamic, int NBC = csBlockMatrix::Dynamic>
+template <int matType, class T, int Ordering, int BR, int BC, int NBR = csBlockMatrix::Dynamic,
+          int NBC = csBlockMatrix::Dynamic>
 class MatrixBlockIterableTypeTraits {};
 
 template <class T, int Ordering, int BR, int BC, int NBR, int NBC>

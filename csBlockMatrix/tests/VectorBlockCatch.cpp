@@ -21,7 +21,8 @@ TEMPLATE_TEST_CASE_SIG("VectorBlock", "[VectorBlock]", ((int BR, int NBR), BR, N
     mat.reset(new MatT());
     REQUIRE(mat->numSegments() == (NBR == csBlockMatrix::Dynamic ? 0 : NBR));
 
-    REQUIRE(mat->mat().rows() == (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : pointSize * numPoints));
+    REQUIRE(mat->mat().rows() ==
+            (NBR == csBlockMatrix::Dynamic || BR == csBlockMatrix::Dynamic ? 0 : pointSize * numPoints));
     REQUIRE(mat->mat().cols() == 1);
 
     mat->resize(pointSize, numPoints);

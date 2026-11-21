@@ -4,8 +4,7 @@
 
 namespace csBlockMatrix {
 
-template <int B, int NB>
-struct DimensionDescriptorTraits {
+template <int B, int NB> struct DimensionDescriptorTraits {
   using BlockSizeType = int;
   using BlockSizeTypePar = int;
 
@@ -15,8 +14,7 @@ struct DimensionDescriptorTraits {
   static constexpr int numElementsAtCompileTime = NB * B;
 };
 
-template <int B>
-struct DimensionDescriptorTraits<B, csBlockMatrix::Dynamic> {
+template <int B> struct DimensionDescriptorTraits<B, csBlockMatrix::Dynamic> {
   using BlockSizeType = int;
   using BlockSizeTypePar = int;
 
@@ -26,8 +24,7 @@ struct DimensionDescriptorTraits<B, csBlockMatrix::Dynamic> {
   static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
 };
 
-template <int NB>
-struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB> {
+template <int NB> struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB> {
   using BlockSizeType = int;
   using BlockSizeTypePar = int;
 
@@ -37,8 +34,7 @@ struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, NB> {
   static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
 };
 
-template <>
-struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, csBlockMatrix::Dynamic> {
+template <> struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, csBlockMatrix::Dynamic> {
   using BlockSizeType = int;
   using BlockSizeTypePar = int;
 
@@ -48,10 +44,9 @@ struct DimensionDescriptorTraits<csBlockMatrix::Dynamic, csBlockMatrix::Dynamic>
   static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
 };
 
-template <int NB>
-struct DimensionDescriptorTraits<csBlockMatrix::Variable, NB> {
+template <int NB> struct DimensionDescriptorTraits<csBlockMatrix::Variable, NB> {
   using BlockSizeType = std::vector<int>;
-  using BlockSizeTypePar = const std::vector<int>&;
+  using BlockSizeTypePar = const std::vector<int> &;
 
   static constexpr int numBlocksAtCompileTime = NB;
   static constexpr int blockSizeAtCompileTime = csBlockMatrix::Dynamic;
@@ -59,10 +54,9 @@ struct DimensionDescriptorTraits<csBlockMatrix::Variable, NB> {
   static constexpr int numElementsAtCompileTime = csBlockMatrix::Dynamic;
 };
 
-template <>
-struct DimensionDescriptorTraits<csBlockMatrix::Variable, csBlockMatrix::Dynamic> {
+template <> struct DimensionDescriptorTraits<csBlockMatrix::Variable, csBlockMatrix::Dynamic> {
   using BlockSizeType = std::vector<int>;
-  using BlockSizeTypePar = const std::vector<int>&;
+  using BlockSizeTypePar = const std::vector<int> &;
 
   static constexpr int numBlocksAtCompileTime = csBlockMatrix::Dynamic;
   static constexpr int blockSizeAtCompileTime = csBlockMatrix::Dynamic;
