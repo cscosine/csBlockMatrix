@@ -1,6 +1,5 @@
 project(csBlockMatrix LANGUAGES CXX)
 
-
 # prepare custom project asserts, note: use standard find_package
 find_package(csCore REQUIRED COMPONENTS assert CONFIG)
 
@@ -8,13 +7,13 @@ list(APPEND CMAKE_MODULE_PATH "${csCore_BASE_DIR}/cmake/csCore/assert/")
 include(csAssert)
 
 # set defaults for Paranoid additional configuration
-csSetAssertDefaultOnForConfig(${PROJECT_NAME} ASSERT RELEASE Paranoid ON)
-csSetAssertDefaultOnForConfig(${PROJECT_NAME} ASSERT RELWITHDEBINFO Paranoid ON)
-csSetAssertDefaultOnForConfig(${PROJECT_NAME} ASSERT DEBUG Paranoid ON)
-csSetAssertDefaultOnForConfig(${PROJECT_NAME} ASSERT PARANOID Paranoid ON)
-csSetAssertDefaultOnForConfig(${PROJECT_NAME} ASSERT SAFE_MATH Paranoid ON)
+cssetassertdefaultonforconfig(${PROJECT_NAME} ASSERT RELEASE Paranoid ON)
+cssetassertdefaultonforconfig(${PROJECT_NAME} ASSERT RELWITHDEBINFO Paranoid ON)
+cssetassertdefaultonforconfig(${PROJECT_NAME} ASSERT DEBUG Paranoid ON)
+cssetassertdefaultonforconfig(${PROJECT_NAME} ASSERT PARANOID Paranoid ON)
+cssetassertdefaultonforconfig(${PROJECT_NAME} ASSERT SAFE_MATH Paranoid ON)
 
-csAssertGenerateProject(csBlockMatrix csBlockMatrix) #generate target csBlockMatrix::csBlockMatrixAssert
+cs_assert_generate_project(csBlockMatrix csBlockMatrix) #generate target csBlockMatrix::csBlockMatrixAssert
 list(POP_BACK CMAKE_MODULE_PATH)
 
 # prepare standard library
@@ -27,11 +26,12 @@ cs_find_package(csBlockMatrix PUBLIC csCore COMPONENTS core eigenUtils REQUIRED 
 # add openmp support, this will both find the right packages and add link libraries
 cs_target_use_openmp(csBlockMatrix PUBLIC)
 
-cs_target_sources(csBlockMatrix
-	PRIVATE_INSTALL
+cs_target_sources(
+  csBlockMatrix
+  PRIVATE_INSTALL
     Global.hpp
-		DimensionDescriptor.hpp
-		DimensionDescriptor_impl.hpp
+    DimensionDescriptor.hpp
+    DimensionDescriptor_impl.hpp
     DimensionDescriptorTraits.hpp
     DimensionDescriptorTraits_impl.hpp
     MatrixBlockDescriptor.hpp
@@ -57,17 +57,12 @@ cs_target_sources(csBlockMatrix
     Utils_impl.hpp
     VectorBlock.hpp
     VectorBlock_impl.hpp
-		PRIVATE
-		DimensionDescriptor.cpp
-    DimensionDescriptorTraits.cpp
-    SparsityPattern.cpp
+  PRIVATE DimensionDescriptor.cpp DimensionDescriptorTraits.cpp SparsityPattern.cpp
 )
 
-cs_target_link_libraries(csBlockMatrix
-	PUBLIC
-		Eigen3::Eigen
-		csBlockMatrix::csBlockMatrixAssert
-		csBlockMatrix::cscmake_base_include
+cs_target_link_libraries(
+  csBlockMatrix
+  PUBLIC Eigen3::Eigen csBlockMatrix::csBlockMatrixAssert csBlockMatrix::cscmake_base_include
 )
 
 add_subdirectory(tests)
